@@ -1,0 +1,25 @@
+{
+  "_note": "Synthetic, trimmed shape of GET /v1beta/models. Model names are placeholders, not real models.",
+  "models": [
+    {
+      "name": "models/example-flash-1",
+      "displayName": "Example Flash 1",
+      "supportedGenerationMethods": ["generateContent", "countTokens"]
+    },
+    {
+      "name": "models/example-flash-2",
+      "displayName": "Example Flash 2",
+      "supportedGenerationMethods": ["generateContent", "countTokens"]
+    },
+    {
+      "name": "models/example-pro-1",
+      "displayName": "Example Pro 1",
+      "supportedGenerationMethods": ["generateContent"]
+    },
+    {
+      "name": "models/embedding-model-x",
+      "displayName": "Embedding X",
+      "supportedGenerationMethods": ["embedContent"]
+    }
+  ]
+}

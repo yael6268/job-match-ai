@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sidepanel-static",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-I", "scripts/serve-preview.py", "5179", ".output/chrome-mv3"],
+      "port": 5179
+    }
+  ]
+}

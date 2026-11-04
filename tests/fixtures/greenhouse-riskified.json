@@ -1,0 +1,169 @@
+{
+ "jobs": [
+  {
+   "absolute_url": "https://www.riskified.com/careers/job-description/?gh_jid=8653104002",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": false
+    }
+   ],
+   "internal_job_id": 6455713002,
+   "location": {
+    "name": "Tel Aviv"
+   },
+   "metadata": [
+    {
+     "id": 24683490002,
+     "name": "Hiring Range",
+     "value": null,
+     "value_type": "currency_range"
+    }
+   ],
+   "id": 8653104002,
+   "updated_at": "2026-10-26T05:25:39-04:00",
+   "requisition_id": "6455713002",
+   "title": "Data Scientist ",
+   "company_name": "Riskified",
+   "first_published": "2026-08-19T07:24:39-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;h2&gt;&lt;strong&gt;About Us&lt;/strong&gt;&lt;/h2&gt;\n&lt;p&gt;Riskified empowers businesses to unleash ecommerce growth by taking risk off the table. Many of the world’s biggest brands and publicly traded companies selling online rely on Riskified for guaranteed protection against chargebacks, to fight fraud and policy abuse at scale, and to improve customer retention. Developed and managed by the largest team of ecommerce risk analysts, data scientists and researchers, Riskified’s AI-powered fraud and risk intelligence platform analyzes the individual behind each interaction to provide real-time decisions and robust identity-based insights.&lt;/p&gt;\n&lt;p&gt;Riskified is proud to work with incredible companies in virtually all industries including Booking.com, Acer, Gucci, Lorna Jane, GoPro, and &lt;a href=&quot;https://www.riskified.com/customers/&quot;&gt;many more&lt;/a&gt;.&lt;/p&gt;\n&lt;p&gt;We thrive in a collaborative work setting, alongside great people, to build and enhance products that matter. Abundant opportunities to create and contribute provide us with a sense of purpose that extends beyond ourselves, leaving a lasting impact. These sentiments capture why we choose Riskified every day.&amp;nbsp;&lt;/p&gt;\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n&lt;h2&gt;&lt;strong&gt;About the Role&lt;/strong&gt;&lt;/h2&gt;\n&lt;p&gt;The Data Science department powers Riskified’s core value engine by building scalable, production-grade ML solutions that protect revenue and automate complex decisions. We leverage diverse analytical techniques - from advanced statistical modeling and graph theory to classic machine learning and deep learning - to extract maximum signal from complex datasets.&lt;/p&gt;",
+   "departments": [
+    {
+     "id": 4028403002,
+     "name": "Research",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [
+    {
+     "id": 4014581002,
+     "name": "Tel Aviv",
+     "location": "Tel Aviv-Yafo, Gush Dan, Israel",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://www.riskified.com/careers/job-description/?gh_jid=8499857002",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": false
+    }
+   ],
+   "internal_job_id": 6395269002,
+   "location": {
+    "name": "Lisbon"
+   },
+   "metadata": [
+    {
+     "id": 24683490002,
+     "name": "Hiring Range",
+     "value": null,
+     "value_type": "currency_range"
+    }
+   ],
+   "id": 8499857002,
+   "updated_at": "2026-09-01T11:33:19-04:00",
+   "requisition_id": "6395269002",
+   "title": "Data Scientist ",
+   "company_name": "Riskified",
+   "first_published": "2026-04-13T07:16:28-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;h2&gt;&lt;strong&gt;About Us&lt;/strong&gt;&lt;/h2&gt;\n&lt;p&gt;Riskified empowers businesses to unleash ecommerce growth by taking risk off the table. Many of the world’s biggest brands and publicly traded companies selling online rely on Riskified for guaranteed protection against chargebacks, to fight fraud and policy abuse at scale, and to improve customer retention. Developed and managed by the largest team of ecommerce risk analysts, data scientists and researchers, Riskified’s AI-powered fraud and risk intelligence platform analyzes the individual behind each interaction to provide real-time decisions and robust identity-based insights. Riskified is proud to work with incredible companies in virtually all industries including Acer, Gucci, Lorna Jane, GoPro, and &lt;a href=&quot;https://www.riskified.com/customers/&quot;&gt;many more&lt;/a&gt;.&lt;/p&gt;\n&lt;p&gt;We thrive in a collaborative work setting, alongside great people, to build and enhance products that matter. Abundant opportunities to create and contribute provide us with a sense of purpose that extends beyond ourselves, leaving a lasting impact. These sentiments capture why we choose Riskified every day.&amp;nbsp;&lt;/p&gt;\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;",
+   "departments": [
+    {
+     "id": 4028403002,
+     "name": "Research",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [
+    {
+     "id": 4057055002,
+     "name": "Lisbon",
+     "location": "Lisbon, Lisbon, Portugal",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://www.riskified.com/careers/job-description/?gh_jid=8768908002",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": false
+    }
+   ],
+   "internal_job_id": 6508314002,
+   "location": {
+    "name": "Tel Aviv"
+   },
+   "metadata": [
+    {
+     "id": 24683490002,
+     "name": "Hiring Range",
+     "value": null,
+     "value_type": "currency_range"
+    }
+   ],
+   "id": 8768908002,
+   "updated_at": "2026-10-20T14:01:50-04:00",
+   "requisition_id": "6508314002",
+   "title": "Account Executive",
+   "company_name": "Riskified",
+   "first_published": "2026-09-10T11:35:28-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;h2&gt;&lt;strong&gt;About Us&lt;/strong&gt;&lt;/h2&gt;\n&lt;p&gt;Riskified empowers businesses to unleash ecommerce growth by taking risk off the table. Many of the world’s biggest brands and publicly traded companies selling online rely on Riskified for guaranteed protection against chargebacks, to fight fraud and policy abuse at scale, and to improve customer retention. Developed and managed by the largest team of ecommerce risk analysts, data scientists and researchers, Riskified’s AI-powered fraud and risk intelligence platform analyzes the individual behind each interaction to provide real-time decisions and robust identity-based insights.&lt;/p&gt;\n&lt;p&gt;Riskified is proud to work with incredible companies in virtually all industries including Booking.com, Acer, Gucci, Lorna Jane, GoPro, and &lt;a href=&quot;https://www.riskified.com/customers/&quot;&gt;many more&lt;/a&gt;.&lt;/p&gt;\n&lt;p&gt;We thrive in a collaborative work setting, alongside great people, to build and enhance products that matter. Abundant opportunities to create and contribute provide us with a sense of purpose that extends beyond ourselves, leaving a lasting impact. These sentiments capture why we choose Riskified every day.&amp;nbsp;&lt;/p&gt;\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n&lt;h2&gt;&lt;strong&gt;About the Role&lt;/strong&gt;&lt;/h2&gt;\n&lt;p&gt;Riskified’s Growth Team plays a key role in defining and executing the company’s expansion strategy. We are looking for an enthusiastic, highly intelligent individual to join our team as an account executive, a role that combines sales, consulting, strategic thinking, and business analysis.&lt;/p&gt;",
+   "departments": [
+    {
+     "id": 4028409002,
+     "name": "Sales",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [
+    {
+     "id": 4014581002,
+     "name": "Tel Aviv",
+     "location": "Tel Aviv-Yafo, Gush Dan, Israel",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  }
+ ],
+ "meta": {
+  "total": 3
+ }
+}

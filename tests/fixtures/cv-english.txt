@@ -1,0 +1,25 @@
+SAMPLE USER
+QA Automation Engineer
+sample.user@example.com | +972-50-000-0000 | linkedin.com/in/sample-user-000
+github.com/sample-user
+12 Example Street, Tel Aviv
+
+SUMMARY
+QA automation engineer with 4 years of experience testing web and mobile products.
+
+EXPERIENCE
+QA Automation Engineer, Acme Software, Tel Aviv | 2019 - 2023
+• Built an end-to-end framework with Selenium and later Playwright (TypeScript).
+• Wrote 300+ API tests in Python 3.11 with pytest; cut regression time by 60%.
+• Ran CI pipelines in Jenkins and GitHub Actions.
+
+Manual QA, Example Labs | 2018 - 2019
+• Tested 120 REST endpoints with Postman.
+
+EDUCATION
+B.Sc Computer Science, Example University, 2014 - 2018
+
+SKILLS
+Selenium, Playwright, Cypress, Python, TypeScript, SQL, Jira, Git, Docker
+
+References: available on request, call 03-1234567 or email references@example.com

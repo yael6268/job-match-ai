@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Riskified",
+    "source": "greenhouse",
+    "boardId": "riskified",
+    "enabled": true,
+    "example": true
+  },
+  {
+    "name": "Similarweb",
+    "source": "greenhouse",
+    "boardId": "similarweb",
+    "enabled": true,
+    "example": true
+  },
+  {
+    "name": "WalkMe",
+    "source": "lever",
+    "boardId": "walkme",
+    "aliases": ["WalkMe, an SAP company"],
+    "enabled": true,
+    "example": true
+  }
+]

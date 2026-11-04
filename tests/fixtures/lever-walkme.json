@@ -1,0 +1,113 @@
+[
+ {
+  "additionalPlain": "Our job titles may span more than one career level. The base salary for this position is between $100,000-$160,000. The actual base pay is dependent upon many factors, such as: location, training, transferable skills, work experience, business needs and market demands. The base pay range is subject ",
+  "additional": "<div>Our job titles may span more than one career level. The base salary for this position is between $100,000-$160,000. The actual base pay is dependent upon many factors, such as: location, training, transferable skills, work experience, business needs and market demands. The base pay range is sub",
+  "categories": {
+   "commitment": "Full-time",
+   "department": "R&D",
+   "location": "New York City",
+   "team": "RND",
+   "allLocations": [
+    "New York City",
+    "New York",
+    "Raleigh",
+    "Miami"
+   ]
+  },
+  "createdAt": 1772754274545,
+  "descriptionPlain": "Industry leader? Well, how about an industry creator?!\n \nWalkMe, an SAP company, pioneered the world's leading Digital Adoption Platform, helping organizations navigate change across any application or system. Today it is the platform that drives AI adoption across the enterprise. Enterprise work stays fragmented across applications, and that fragmentation compounds as AI advances. Traditional training and vendor-provided help leave organizations managing change one application at a time. WalkMe guides people through change, brings AI into the flow of work, automates tasks and shows executives how workflows perform. Global leaders including IBM, Nestlé, Thermo Fisher Scientific, and the U.S. federal government trust WalkMe. WalkMe turns AI potential into AI performance.\n \n",
+  "description": "<div>Industry leader? Well, how about an industry creator?!</div>\n<div>&nbsp;</div>",
+  "id": "ed7c7019-56c5-4b89-90fe-2ee6cb255f48",
+  "lists": [
+   {
+    "text": "What You'll Own",
+    "content": "\n<li>Assist in managing deployment pipelines to facilitate smooth and efficient software releases.</li>\n<li>Help implement and maintain observability solutions for monitoring system performance and reliability.</li>\n<li>Support local development environments to optimize developer workflows.</li>\n<li>Work with development teams to ensure infrastructure aligns with project requirements.</li>\n<li>Contribute to improving the security of our infrastructure by assisting with proactive measures and audits.</li>\n<li>Assist in developing and maintaining automation scripts and tools to enhance operational efficiency.</li>\n<li>Help troubleshoot and resolve infrastructure and application issues to minimize downtime and maintain smooth operations.</li>\n<li>Participate in evaluating and integrating new technologies to enhance the scalability, reliability, and security of our infrastructure.</li>\n"
+   },
+   {
+    "text": "What You Need to Succeed",
+    "content": "\n<li>Bachelor’s degree in Computer Science, Engineering, or a related field, or equivalent practical experience.</li>\n<li>4+ years of experience as a DevOps Engineer, Site Reliability Engineer or similar role</li>\n<li>Proven Software development experience, preferably gained at a venture-backed startup or a top technology firm.</li>\n<li>Expertise in managing CI/CD pipelines and deployment automation with tools such as Gitlab.</li>\n<li>Proficiency in AWS cloud platform.</li>\n<li>Solid understanding of containerization and orchestration technologies such as Docker and Kubernetes.</li>\n<li>Experience with monitoring and observability tools such as Datadog, Prometheus, Grafana, or similar.</li>\n<li>Knowledge of infrastructure-as-code (IaC) tools such as Terraform or CloudFormation.</li>\n<li>Experience in managing databases, such as Mysql, Postgres and MongoDB.</li>"
+   }
+  ],
+  "text": "DevOps Engineer",
+  "country": "US",
+  "workplaceType": "remote",
+  "opening": "<div>Industry leader? Well, how about an industry creator?!</div>\n<div>&nbsp;</div>",
+  "openingPlain": "Industry leader? Well, how about an industry creator?!\n \n",
+  "descriptionBody": "<div>As a DevOps Engineer at WalkMe, you'll join our Cloud Engineering team. We&rsquo;re developing WalkMe&rsquo;s revolutionary runtime engine and transforming the online experience for hundreds of millions of users.&nbsp;<br>&nbsp;<br>If you're excited about developing and working on innovative products, solving technical challenges and being part of a company that is now proudly a member of the SAP family&mdash;WalkMe is the place for you.</div>",
+  "descriptionBodyPlain": "As a DevOps Engineer at WalkMe, you'll join our Cloud Engineering team. We’re developing WalkMe’s revolutionary runtime engine and transforming the online experience for hundreds of millions of users. \n \nIf you're excited about developing and working on innovative products, solving technical challenges and being part of a company that is now proudly a member of the SAP family—WalkMe is the place for you.\n",
+  "hostedUrl": "https://jobs.lever.co/walkme/ed7c7019-56c5-4b89-90fe-2ee6cb255f48",
+  "applyUrl": "https://jobs.lever.co/walkme/ed7c7019-56c5-4b89-90fe-2ee6cb255f48/apply"
+ },
+ {
+  "additionalPlain": "At WalkMe, we approach Diversity, Equity and Inclusion (DEI) with the same level of collaboration, innovation and accountability that we bring to the rest of our business. We believe in the value of diversity and are committed to ensuring an equitable and inclusive workplace where every employee has",
+  "additional": "<div>At WalkMe, we approach Diversity, Equity and Inclusion (DEI) with the same level of collaboration, innovation and accountability that we bring to the rest of our business. We believe in the value of diversity and are committed to ensuring an equitable and inclusive workplace where every employe",
+  "categories": {
+   "commitment": "Full-time",
+   "department": "R&D",
+   "location": "Tel Aviv",
+   "team": "RND",
+   "allLocations": [
+    "Tel Aviv"
+   ]
+  },
+  "createdAt": 1787646665194,
+  "descriptionPlain": "Industry leader? Well, how about an industry creator?!\n \nWalkMe, an SAP company, pioneered the world's leading Digital Adoption Platform, helping organizations navigate change across any application or system. Today it is the platform that drives AI adoption across the enterprise. Enterprise work stays fragmented across applications, and that fragmentation compounds as AI advances. Traditional training and vendor-provided help leave organizations managing change one application at a time. WalkMe guides people through change, brings AI into the flow of work, automates tasks and shows executives how workflows perform. Global leaders including IBM, Nestlé, Thermo Fisher Scientific, and the U.S. federal government trust WalkMe. WalkMe turns AI potential into AI performance.\n \n",
+  "description": "<div>Industry leader? Well, how about an industry creator?!</div>\n<div>&nbsp;</div>",
+  "id": "523740d8-98cd-43a2-8c2a-a94fa1c24705",
+  "lists": [
+   {
+    "text": "What You'll Own:",
+    "content": "<div>\n\n<li>\n<p>End to end development of features and systems that are used daily by key stakeholders, both internally and externally</p>\n</li>\n<li>\n<p>A technical focal point for software development best practices and design of main components, services and systems.</p>\n</li>\n<li>\n<p>Explore, implement, and introduce cutting-edge technologies and innovative ideas.</p>\n</li>\n\n</div>"
+   },
+   {
+    "text": "What You Need to Succeed:",
+    "content": "\n<li>\n<p>B.Sc. in CS/EE from a leading university OR army experience - a must.</p>\n</li>\n<li>\n<p>6+ years of professional software development experience, with JavaScript and web technologies.</p>\n</li>\n<li>\n<p>3+ years of experience of server-side development with Node.js.</p>\n</li>\n<li>Experience working with React/Angular/Vue.</li>\n<li>\n<p>Experience in designing and developing large distributed systems and microservices architecture.</p>\n</li>\n<li>\n<p>Experience working with Kubernetes - advantage.</p>\n</li>\n<li>\n<p>Experience working on AI/ML-driven products - advantage.</p>\n</li>\n"
+   }
+  ],
+  "text": "Senior Software Engineer - Big Data Platform",
+  "country": "IL",
+  "workplaceType": "hybrid",
+  "opening": "<div>Industry leader? Well, how about an industry creator?!</div>\n<div>&nbsp;</div>",
+  "openingPlain": "Industry leader? Well, how about an industry creator?!\n \n",
+  "descriptionBody": "<div>\n<p>WalkMe is looking for a Software Developer to join our Big Data and Analytics department.</p>\n<p>Our Big Data Platform delivers the foundational, high-performance data infrastructure that powers dashboards, APIs and contextual insights for both customer facing and internal products.&nbsp;</p>",
+  "descriptionBodyPlain": "WalkMe is looking for a Software Developer to join our Big Data and Analytics department.\nOur Big Data Platform delivers the foundational, high-performance data infrastructure that powers dashboards, APIs and contextual insights for both customer facing and internal products. \n",
+  "hostedUrl": "https://jobs.lever.co/walkme/523740d8-98cd-43a2-8c2a-a94fa1c24705",
+  "applyUrl": "https://jobs.lever.co/walkme/523740d8-98cd-43a2-8c2a-a94fa1c24705/apply"
+ },
+ {
+  "additionalPlain": "We win with Inclusion\n",
+  "additional": "<div><strong style=\"font-size: 10.5pt;\">We win with Inclusion</strong></div>",
+  "categories": {
+   "commitment": "Full-time",
+   "department": "Sales",
+   "location": "Stockholm",
+   "team": "Sales Int",
+   "allLocations": [
+    "Stockholm"
+   ]
+  },
+  "createdAt": 1779974249905,
+  "descriptionPlain": "WalkMe, an SAP company, pioneered the world's leading Digital Adoption Platform, helping organizations navigate change across any application or system. Today it is the platform that drives AI adoption across the enterprise. Enterprise work stays fragmented across applications, and that fragmentation compounds as AI advances. Traditional training and vendor-provided help leave organizations managing change one application at a time. WalkMe guides people through change, brings AI into the flow of work, automates tasks and shows executives how workflows perform. Global leaders including IBM, Nestlé, Thermo Fisher Scientific, and the U.S. federal government trust WalkMe. WalkMe turns AI potential into AI performance.\n \nThis role is with SAP, supporting WalkMe.\n\n\n",
+  "description": "<div>WalkMe, an SAP company, pioneered the world's leading Digital Adoption Platform, helping organizations navigate change across any application or system. Today it is the platform that drives AI adoption across the enterprise. Enterprise work stays fragmented across applications, and that fragmentation compounds as AI advances. Traditional training and vendor-provided help leave organizations managing change one application at a time. WalkMe guides people through change, brings AI into the flow of work, automates tasks and shows executives how workflows perform. Global leaders including IBM, Nestlé, Thermo Fisher Scientific, and the U.S. federal government trust WalkMe. WalkMe turns AI potential into AI performance.</div>\n<div>&nbsp;</div>",
+  "id": "0808b2c0-80f7-478b-9067-812416ac0634",
+  "lists": [
+   {
+    "text": "What You'll Own",
+    "content": "<div>\n<ul style=\"margin-bottom: 0cm; margin-top: 0px;\">\n<li style=\"margin-right: 0cm; font-size: 12pt; font-family: 'Times New Roman', serif; margin-left: 0px;\"><strong><span style=\"font-family: Calibri, sans-serif;\">Drive Net New Business:</span></strong><span style=\"font-family: Calibri, sans-serif;\"> Own the full A-to-Z sales cycle for the Nordic region, from initial pipeline generation, discovery, and tailored demos/POCs, through to complex contract negotiations and closing.</span></li>"
+   },
+   {
+    "text": "What You Need to Succeed",
+    "content": "<div>\n<ul style=\"margin-bottom: 0cm; margin-top: 0px;\">\n<li style=\"margin-right: 0cm; font-size: 12pt; font-family: 'Times New Roman', serif; margin-left: 0px;\"><strong><span style=\"font-family: Calibri, sans-serif;\">Enterprise SaaS Expertise:</span></strong><span style=\"font-family: Calibri, sans-serif;\"> 6+ years of proven success in Enterprise Software Sales (SaaS) or Strategic Business Consulting, consistently hitting or exceeding seven-figure quotas.</span></li>"
+   }
+  ],
+  "text": "Account Executive",
+  "country": "SE",
+  "workplaceType": "hybrid",
+  "opening": "<div>WalkMe, an SAP company, pioneered the world's leading Digital Adoption Platform, helping organizations navigate change across any application or system. Today it is the platform that drives AI adoption across the enterprise. Enterprise work stays fragmented across applications, and that fragmentation compounds as AI advances. Traditional training and vendor-provided help leave organizations managing change one application at a time. WalkMe guides people through change, brings AI into the fl",
+  "openingPlain": "WalkMe, an SAP company, pioneered the world's leading Digital Adoption Platform, helping organizations navigate change across any application or system. Today it is the platform that drives AI adoption across the enterprise. Enterprise work stays fragmented across applications, and that fragmentation compounds as AI advances. Traditional training and vendor-provided help leave organizations managing change one application at a time. WalkMe guides people through change, brings AI into the flow of",
+  "descriptionBody": "<div>\n<p style=\"margin: 0cm 0cm 8pt; font-size: 11pt; font-family: Calibri, sans-serif; line-height: 107%;\"><span style=\"font-size: 12.0pt; line-height: 107%;\">As the company continues to rapidly expand in EMEA, we are seeking a driven Account Executive to manage all aspects of the sale's cycle, with a focus on New Logo Acquisition in the Nordic market.</span></p>",
+  "descriptionBodyPlain": "As the company continues to rapidly expand in EMEA, we are seeking a driven Account Executive to manage all aspects of the sale's cycle, with a focus on New Logo Acquisition in the Nordic market.\nAs an Enterprise Account Executive for the Nordic market, you will act as a strategic hunter focused entirely on Net New Logo Acquisition. You will own the complete, end-to-end sales cycle—navigating complex enterprise environments, partnering with global SAP teams, and positioning WalkMe’s high-value solutions to C-suite decision-makers.\n",
+  "hostedUrl": "https://jobs.lever.co/walkme/0808b2c0-80f7-478b-9067-812416ac0634",
+  "applyUrl": "https://jobs.lever.co/walkme/0808b2c0-80f7-478b-9067-812416ac0634/apply"
+ }
+]
