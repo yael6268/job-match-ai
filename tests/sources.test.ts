@@ -184,6 +184,26 @@ describe('adapters over the network (fetch mocked)', () => {
     expect(n).toBe(2);
   });
 
+  it('a body that stalls after the headers is a timeout too, and is retried', async () => {
+    let n = 0;
+    vi.stubGlobal('fetch', vi.fn(async (_u: string, init?: RequestInit) => {
+      if (n++ > 0) return new Response(JSON.stringify(ghFixture), { status: 200 });
+      // Headers arrive, then the body never finishes until the request is aborted.
+      return { ok: true, status: 200, json: () => hangUntilAborted(init) } as unknown as Response;
+    }));
+    const jobs = await withFakeTimers(() => greenhouse.fetchJobs(ghCo));
+    expect(jobs).toHaveLength(3);
+    expect(n).toBe(2);
+  });
+
+  it('a body that stalls on both attempts fails with the timeout message', async () => {
+    const fetchMock = vi.fn(async (_u: string, init?: RequestInit) =>
+      ({ ok: true, status: 200, json: () => hangUntilAborted(init) }) as unknown as Response);
+    vi.stubGlobal('fetch', fetchMock);
+    await expect(withFakeTimers(() => greenhouse.fetchJobs(ghCo))).rejects.toThrow('תם הזמן');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
   it('retries 429 and 503, but not 404 or 403', async () => {
     let calls = stubFetchSequence({ status: 429, body: {} }, { status: 200, body: ghFixture });
     expect(await withFakeTimers(() => greenhouse.fetchJobs(ghCo))).toHaveLength(3);

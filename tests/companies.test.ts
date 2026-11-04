@@ -3,6 +3,8 @@ import {
   companyKey, deleteCompany, getCompanies, parseCompany, saveCompany, seedCompanies, upsertInList,
 } from '@/shared/companies';
 import type { Company } from '@/shared/types';
+import { db } from '@/db/schema';
+import { upsertJobsFromSource } from '@/db/repo';
 import { fake } from './setup';
 
 const acme: Company = { name: 'Acme', source: 'greenhouse', boardId: 'acme', enabled: true };
@@ -67,6 +69,18 @@ describe('storage', () => {
     expect(afterAdd.some((c) => c.name === 'Acme')).toBe(true);
     for (const c of afterAdd) await deleteCompany(companyKey(c));
     expect(await getCompanies()).toEqual([]);
+  });
+
+  it('renaming a company moves its stored jobs to the new name; other edits leave them alone', async () => {
+    await fake.storage.local.set({ companies: [acme] });
+    await upsertJobsFromSource([{
+      source: 'greenhouse', sourceJobId: '1', company: 'Acme', title: 'QA',
+      url: 'https://boards.greenhouse.io/acme/jobs/1', location: 'Israel', descriptionText: '',
+    }]);
+    await saveCompany({ ...acme, enabled: false }, companyKey(acme));
+    expect((await db.jobs.toArray())[0]!.company).toBe('Acme');
+    await saveCompany({ ...acme, name: 'Acme Inc' }, companyKey(acme));
+    expect((await db.jobs.toArray())[0]!.company).toBe('Acme Inc');
   });
 
   it('drops corrupt stored entries instead of failing', async () => {

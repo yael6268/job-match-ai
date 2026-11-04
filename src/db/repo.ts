@@ -78,6 +78,20 @@ export async function markClosed(
     .modify({ status: 'closed' });
 }
 
+/**
+ * When the user renames a company, move its stored jobs to the new name. Jobs are linked to their
+ * company by name (see markClosed), so without this the old jobs could never be closed.
+ * Returns how many jobs were renamed.
+ */
+export async function renameCompanyJobs(source: SourceName, from: string, to: string): Promise<number> {
+  if (from === to) return 0;
+  return db.jobs
+    .where('company')
+    .equals(from)
+    .filter((j) => j.source === source)
+    .modify({ company: to });
+}
+
 export interface JobWithMatch {
   job: Job;
   match: Match;

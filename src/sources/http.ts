@@ -26,24 +26,30 @@ function isTransient(e: unknown): boolean {
   return e instanceof HttpError && (e.status === 429 || e.status >= 500);
 }
 
+/** One attempt. The timeout covers the whole request, including reading the body. */
 async function fetchJsonOnce(url: string, timeoutMs: number): Promise<unknown> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-  let res: Response;
+  const timedOut = () => new TransientError(`תם הזמן (${timeoutMs / 1000} שניות) בלי תשובה`);
   try {
-    res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
-  } catch (e) {
-    if ((e as Error).name === 'AbortError') throw new TransientError(`תם הזמן (${timeoutMs / 1000} שניות) בלי תשובה`);
-    throw new TransientError('שגיאת רשת — אין חיבור או שהשרת לא זמין');
+    let res: Response;
+    try {
+      res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
+    } catch (e) {
+      if ((e as Error).name === 'AbortError' || ctrl.signal.aborted) throw timedOut();
+      throw new TransientError('שגיאת רשת — אין חיבור או שהשרת לא זמין');
+    }
+    if (res.status === 404) throw new HttpError('הלוח לא נמצא (404) — בדקי את מזהה החברה', 404);
+    if (!res.ok) throw new HttpError(`השרת החזיר שגיאה ${res.status}`, res.status);
+    try {
+      return (await res.json()) as unknown;
+    } catch {
+      // A body cut off by our timeout is transient; a complete but broken body is not.
+      if (ctrl.signal.aborted) throw timedOut();
+      throw new Error('התשובה מהשרת אינה JSON תקין');
+    }
   } finally {
     clearTimeout(timer);
-  }
-  if (res.status === 404) throw new HttpError('הלוח לא נמצא (404) — בדקי את מזהה החברה', 404);
-  if (!res.ok) throw new HttpError(`השרת החזיר שגיאה ${res.status}`, res.status);
-  try {
-    return (await res.json()) as unknown;
-  } catch {
-    throw new Error('התשובה מהשרת אינה JSON תקין');
   }
 }
 

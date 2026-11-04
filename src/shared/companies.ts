@@ -2,6 +2,7 @@
 import { z } from 'zod';
 import { browser } from 'wxt/browser';
 import seed from '@/data/companies.json';
+import { renameCompanyJobs } from '@/db/repo';
 import type { Company } from './types';
 import { NOT_IN_EXTENSION_MSG } from './storage';
 
@@ -88,8 +89,15 @@ export async function saveCompanies(list: Company[]): Promise<void> {
 }
 
 export async function saveCompany(company: Company, replaceKey?: string): Promise<Company[]> {
-  const next = upsertInList(await getCompanies(), parseCompany(company), replaceKey);
+  const current = await getCompanies();
+  const parsed = parseCompany(company);
+  const next = upsertInList(current, parsed, replaceKey);
   await saveCompanies(next);
+  // A rename (same source) carries the company's stored jobs over to the new name.
+  const before = replaceKey === undefined ? undefined : current.find((c) => companyKey(c) === replaceKey);
+  if (before && before.source === parsed.source && before.name !== parsed.name) {
+    await renameCompanyJobs(parsed.source, before.name, parsed.name);
+  }
   return next;
 }
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { db } from '@/db/schema';
 import {
   addApplication, clearAll, exportAll, getJobsForToday, getMatch, getStats, importAll,
-  markClosed, markViewed, saveMatch, setStatus, upsertJobsFromSource,
+  markClosed, markViewed, renameCompanyJobs, saveMatch, setStatus, upsertJobsFromSource,
 } from '@/db/repo';
 import type { CV, Match, SourceJob } from '@/shared/types';
 import { jobIdFromUrl } from '@/shared/utils';
@@ -101,6 +101,27 @@ describe('markClosed', () => {
     const rest = await db.jobs.where('company').equals('Other').first();
     expect(rest!.status).toBe('new');
     expect((await db.jobs.where('source').equals('lever').first())!.status).toBe('new');
+  });
+});
+
+describe('renameCompanyJobs', () => {
+  it('moves only that source\'s jobs to the new name, so markClosed still finds them', async () => {
+    const lever = srcJob(9, { source: 'lever', url: 'https://jobs.lever.co/acme/9' });
+    await upsertJobsFromSource([srcJob(1), srcJob(2), lever], T1);
+    const [a, b] = await Promise.all([1, 2].map((n) => jobIdFromUrl(srcJob(n).url)));
+
+    expect(await renameCompanyJobs('greenhouse', 'Acme', 'Acme Inc')).toBe(2);
+    expect((await db.jobs.where('company').equals('Acme').toArray()).map((j) => j.source)).toEqual(['lever']);
+
+    // Next run lists only job 2 under the new name: job 1 must close.
+    expect(await markClosed('greenhouse', 'Acme Inc', [b!])).toBe(1);
+    expect((await db.jobs.get(a!))!.status).toBe('closed');
+    expect((await db.jobs.get(b!))!.company).toBe('Acme Inc');
+  });
+
+  it('is a no-op when the name did not change', async () => {
+    await upsertJobsFromSource([srcJob(1)], T1);
+    expect(await renameCompanyJobs('greenhouse', 'Acme', 'Acme')).toBe(0);
   });
 });
 
