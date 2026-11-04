@@ -45,6 +45,9 @@ export function TodayScreen() {
       const settings = await getSettings();
       const [jobs, cvs] = await Promise.all([getJobsForToday(settings.minScoreToShow), listCvs()]);
       setData({ jobs, cvs, settings });
+      // Shown here = seen: clear them from the toolbar badge.
+      const unseen = jobs.filter((j) => !j.job.viewed).map((j) => j.job.id);
+      if (unseen.length) send('markViewed', { jobIds: unseen }).catch(() => { /* badge is best-effort */ });
     } catch (e) {
       setError((e as Error).message);
     }

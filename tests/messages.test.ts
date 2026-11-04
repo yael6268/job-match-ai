@@ -9,6 +9,7 @@ const handlers: Handlers = {
   startRun: async () => { throw new Error('boom'); },
   getRunState: async () => null,
   testCompany: async ({ company }) => ({ count: company.name.length }),
+  markViewed: async ({ jobIds }) => ({ badge: jobIds.length }),
 };
 
 describe('dispatch', () => {
@@ -40,7 +41,7 @@ describe('startOrResumeRun', () => {
     };
     const first = await startOrResumeRun(deps);
     const second = await startOrResumeRun(deps);
-    expect(second.runId).toBe(first.runId);
+    expect(second!.runId).toBe(first!.runId);
     release();
     const final = await waitForRun()!;
     expect(final.phase).toBe('done');

@@ -9,6 +9,8 @@ export interface MessageMap {
   startRun: { req: NoPayload; res: RunState };
   getRunState: { req: NoPayload; res: RunState | null };
   testCompany: { req: { company: Company }; res: { count: number } };
+  /** The Today screen showed these jobs: mark viewed, update the badge. */
+  markViewed: { req: { jobIds: string[] }; res: { badge: number } };
 }
 
 export type MessageType = keyof MessageMap;
