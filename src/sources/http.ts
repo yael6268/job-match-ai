@@ -1,6 +1,10 @@
-// Shared HTTP helper for job sources: timeout, readable errors, JSON parsing.
+// Shared HTTP helper for job sources: timeout, one retry, readable errors, JSON parsing.
+import { sleep } from '@/shared/utils';
 
 export const SOURCE_TIMEOUT_MS = 20_000;
+/** Extra attempts after a transient failure (timeout, network error, 429, 5xx). */
+export const SOURCE_RETRIES = 1;
+export const SOURCE_RETRY_DELAY_MS = 2_000;
 
 export class HttpError extends Error {
   constructor(message: string, readonly status: number) {
@@ -9,16 +13,28 @@ export class HttpError extends Error {
   }
 }
 
-/** GET a URL and parse JSON. Throws HttpError (with status) or Error with a Hebrew message. */
-export async function fetchJson(url: string, timeoutMs = SOURCE_TIMEOUT_MS): Promise<unknown> {
+/** A failure that may succeed if tried again (slow or flaky server, dropped connection). */
+class TransientError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'TransientError';
+  }
+}
+
+function isTransient(e: unknown): boolean {
+  if (e instanceof TransientError) return true;
+  return e instanceof HttpError && (e.status === 429 || e.status >= 500);
+}
+
+async function fetchJsonOnce(url: string, timeoutMs: number): Promise<unknown> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   let res: Response;
   try {
     res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
   } catch (e) {
-    if ((e as Error).name === 'AbortError') throw new Error(`תם הזמן (${timeoutMs / 1000} שניות) בלי תשובה`);
-    throw new Error('שגיאת רשת — אין חיבור או שהשרת לא זמין');
+    if ((e as Error).name === 'AbortError') throw new TransientError(`תם הזמן (${timeoutMs / 1000} שניות) בלי תשובה`);
+    throw new TransientError('שגיאת רשת — אין חיבור או שהשרת לא זמין');
   } finally {
     clearTimeout(timer);
   }
@@ -28,6 +44,22 @@ export async function fetchJson(url: string, timeoutMs = SOURCE_TIMEOUT_MS): Pro
     return (await res.json()) as unknown;
   } catch {
     throw new Error('התשובה מהשרת אינה JSON תקין');
+  }
+}
+
+/**
+ * GET a URL and parse JSON. Each attempt has its own timeout; transient failures are retried
+ * `SOURCE_RETRIES` times after a short delay. Throws HttpError (with status) or Error with a Hebrew message.
+ */
+export async function fetchJson(url: string, timeoutMs = SOURCE_TIMEOUT_MS): Promise<unknown> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fetchJsonOnce(url, timeoutMs);
+    } catch (e) {
+      if (attempt >= SOURCE_RETRIES || !isTransient(e)) throw e;
+      console.warn(`[http] retrying after: ${(e as Error).message}`);
+      await sleep(SOURCE_RETRY_DELAY_MS);
+    }
   }
 }
 

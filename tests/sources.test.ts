@@ -4,7 +4,7 @@ import leverFixture from './fixtures/lever-walkme.json';
 import { greenhouse, greenhouseUrl, mapGreenhouse } from '@/sources/greenhouse';
 import { lever, leverUrl, mapLever } from '@/sources/lever';
 import { getAdapter } from '@/sources';
-import { joinUnique, toIso } from '@/sources/http';
+import { joinUnique, SOURCE_RETRY_DELAY_MS, SOURCE_TIMEOUT_MS, toIso } from '@/sources/http';
 import type { Company } from '@/shared/types';
 
 const ghCo: Company = { name: 'Riskified', source: 'greenhouse', boardId: 'riskified', enabled: true };
@@ -21,6 +21,27 @@ function stubFetchSequence(...responses: { status: number; body: unknown }[]) {
     return new Response(typeof r.body === 'string' ? r.body : JSON.stringify(r.body), { status: r.status });
   }));
   return calls;
+}
+
+/** A fetch that never answers until its AbortSignal fires (simulates a hung server). */
+function hangUntilAborted(init?: RequestInit): Promise<Response> {
+  return new Promise((_res, rej) => {
+    init?.signal?.addEventListener('abort', () => rej(Object.assign(new Error('aborted'), { name: 'AbortError' })));
+  });
+}
+
+/** Settle a promise that waits on timers (retry delay, timeouts) without real waiting. */
+async function withFakeTimers<T>(start: () => Promise<T>): Promise<T> {
+  vi.useFakeTimers();
+  try {
+    const settled = start().then((v) => ({ ok: true as const, v }), (e: unknown) => ({ ok: false as const, e }));
+    await vi.runAllTimersAsync();
+    const r = await settled;
+    if (!r.ok) throw r.e;
+    return r.v;
+  } finally {
+    vi.useRealTimers();
+  }
 }
 
 describe('greenhouse mapping (real trimmed response)', () => {
@@ -124,31 +145,58 @@ describe('adapters over the network (fetch mocked)', () => {
     expect(jobs).toHaveLength(3);
   });
 
-  it('lever: 404 on both instances is an error; 500 does not try EU', async () => {
+  it('lever: 404 on both instances is an error; 500 is retried once on the same host, never EU', async () => {
     stubFetchSequence({ status: 404, body: {} }, { status: 404, body: {} });
     await expect(lever.fetchJobs(lvCo)).rejects.toThrow('404');
     const calls = stubFetchSequence({ status: 500, body: 'oops' });
-    await expect(lever.fetchJobs(lvCo)).rejects.toThrow('500');
-    expect(calls).toHaveLength(1);
+    await expect(withFakeTimers(() => lever.fetchJobs(lvCo))).rejects.toThrow('500');
+    expect(calls).toEqual([leverUrl('walkme'), leverUrl('walkme')]);
   });
 
-  it('network failure and invalid JSON become readable errors', async () => {
-    vi.stubGlobal('fetch', vi.fn(async () => { throw new TypeError('Failed to fetch'); }));
-    await expect(greenhouse.fetchJobs(ghCo)).rejects.toThrow('שגיאת רשת');
-    stubFetchSequence({ status: 200, body: '<html>not json' });
+  it('network failure (after a retry) and invalid JSON become readable errors', async () => {
+    const fetchMock = vi.fn(async () => { throw new TypeError('Failed to fetch'); });
+    vi.stubGlobal('fetch', fetchMock);
+    await expect(withFakeTimers(() => greenhouse.fetchJobs(ghCo))).rejects.toThrow('שגיאת רשת');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const calls = stubFetchSequence({ status: 200, body: '<html>not json' });
     await expect(greenhouse.fetchJobs(ghCo)).rejects.toThrow('JSON');
+    expect(calls).toHaveLength(1); // a broken body is not transient
   });
 
-  it('times out', async () => {
+  it('times out on both attempts', async () => {
     vi.useFakeTimers();
-    vi.stubGlobal('fetch', vi.fn((_u: string, init?: RequestInit) => new Promise((_res, rej) => {
-      init?.signal?.addEventListener('abort', () => rej(Object.assign(new Error('aborted'), { name: 'AbortError' })));
-    })));
+    const fetchMock = vi.fn((_u: string, init?: RequestInit) => hangUntilAborted(init));
+    vi.stubGlobal('fetch', fetchMock);
     const p = greenhouse.fetchJobs(ghCo);
     const assertion = expect(p).rejects.toThrow('תם הזמן');
-    await vi.advanceTimersByTimeAsync(20_000);
+    await vi.advanceTimersByTimeAsync(SOURCE_TIMEOUT_MS + SOURCE_RETRY_DELAY_MS + SOURCE_TIMEOUT_MS);
     await assertion;
+    expect(fetchMock).toHaveBeenCalledTimes(2);
     vi.useRealTimers();
+  });
+
+  it('a timeout followed by a good response succeeds', async () => {
+    let n = 0;
+    vi.stubGlobal('fetch', vi.fn(async (_u: string, init?: RequestInit) =>
+      n++ === 0 ? hangUntilAborted(init) : new Response(JSON.stringify(leverFixture), { status: 200 })));
+    const jobs = await withFakeTimers(() => lever.fetchJobs(lvCo));
+    expect(jobs).toHaveLength(3);
+    expect(n).toBe(2);
+  });
+
+  it('retries 429 and 503, but not 404 or 403', async () => {
+    let calls = stubFetchSequence({ status: 429, body: {} }, { status: 200, body: ghFixture });
+    expect(await withFakeTimers(() => greenhouse.fetchJobs(ghCo))).toHaveLength(3);
+    expect(calls).toHaveLength(2);
+    calls = stubFetchSequence({ status: 503, body: {} }, { status: 200, body: ghFixture });
+    expect(await withFakeTimers(() => greenhouse.fetchJobs(ghCo))).toHaveLength(3);
+    expect(calls).toHaveLength(2);
+    calls = stubFetchSequence({ status: 404, body: {} });
+    await expect(greenhouse.fetchJobs(ghCo)).rejects.toThrow('404');
+    expect(calls).toHaveLength(1);
+    calls = stubFetchSequence({ status: 403, body: {} });
+    await expect(greenhouse.fetchJobs(ghCo)).rejects.toThrow('403');
+    expect(calls).toHaveLength(1);
   });
 });
 
