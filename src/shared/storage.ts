@@ -12,6 +12,9 @@ export const DEFAULT_SETTINGS: Settings = {
   dailyCallLimit: 200,
   maxAiCandidatesPerRun: 40,
   locations: ['Israel', 'ישראל', 'Tel Aviv', 'תל אביב', 'Remote', 'Hybrid'],
+  maxRequiredYears: 5,
+  excludedTitleWords: ['senior director', 'vp', 'vice president', 'head of', 'principal', 'staff'],
+  aiDelaySeconds: 4,
 };
 
 export const EMPTY_PROFILE: Profile = {
@@ -33,6 +36,9 @@ export const settingsSchema = z.object({
   dailyCallLimit: z.number().int().min(1).max(100_000),
   maxAiCandidatesPerRun: z.number().int().min(1).max(1000),
   locations: z.array(z.string()),
+  maxRequiredYears: z.number().int().min(0).max(30),
+  excludedTitleWords: z.array(z.string()),
+  aiDelaySeconds: z.number().min(0).max(120),
 });
 
 const KEYS = { settings: 'settings', profile: 'profile' } as const;

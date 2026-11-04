@@ -5,7 +5,9 @@ import { listModels, testKey, type GeminiModel } from '@/ai/gemini';
 import { Status, type StatusMsg } from '../components/Status';
 import { CompaniesSection } from './CompaniesSection';
 
-type NumberKey = 'minScoreToShow' | 'minScoreToNotify' | 'runHour' | 'dailyCallLimit' | 'maxAiCandidatesPerRun';
+type NumberKey =
+  | 'minScoreToShow' | 'minScoreToNotify' | 'runHour' | 'dailyCallLimit' | 'maxAiCandidatesPerRun'
+  | 'maxRequiredYears' | 'aiDelaySeconds';
 
 const NUMBER_FIELDS: { key: NumberKey; label: string; min: number; max: number; hint?: string }[] = [
   { key: 'minScoreToShow', label: 'ציון מינימלי להצגה', min: 0, max: 100 },
@@ -13,6 +15,8 @@ const NUMBER_FIELDS: { key: NumberKey; label: string; min: number; max: number; 
   { key: 'runHour', label: 'שעת ריצה יומית', min: 0, max: 23, hint: '0–23' },
   { key: 'dailyCallLimit', label: 'מגבלת קריאות AI ליום', min: 1, max: 100000, hint: 'כדאי לבדוק את מכסת ה-Free tier העדכנית ב-Google AI Studio' },
   { key: 'maxAiCandidatesPerRun', label: 'מקסימום משרות לניתוח AI בריצה', min: 1, max: 1000 },
+  { key: 'maxRequiredYears', label: 'מקסימום שנות ניסיון נדרשות', min: 0, max: 30, hint: 'משרות שדורשות יותר יסוננו לפני ה-AI' },
+  { key: 'aiDelaySeconds', label: 'השהיה בין קריאות AI (שניות)', min: 0, max: 120 },
 ];
 
 export function SettingsScreen() {
@@ -24,11 +28,13 @@ export function SettingsScreen() {
   const [keyMsg, setKeyMsg] = useState<StatusMsg>(null);
   const [saveMsg, setSaveMsg] = useState<StatusMsg>(null);
   const [locationsText, setLocationsText] = useState('');
+  const [excludedText, setExcludedText] = useState('');
 
   useEffect(() => {
     getSettings().then((loaded) => {
       setS(loaded);
       setLocationsText(loaded.locations.join('\n'));
+      setExcludedText(loaded.excludedTitleWords.join('\n'));
     }, () => setS(DEFAULT_SETTINGS));
   }, []);
 
@@ -77,8 +83,9 @@ export function SettingsScreen() {
   const onSave = () =>
     run('save', async () => {
       const locations = locationsText.split(/[\n,]/).map((l) => l.trim()).filter(Boolean);
+      const excludedTitleWords = excludedText.split(/[\n,]/).map((l) => l.trim()).filter(Boolean);
       try {
-        const saved = await saveSettings({ ...s, geminiApiKey: s.geminiApiKey.trim(), locations });
+        const saved = await saveSettings({ ...s, geminiApiKey: s.geminiApiKey.trim(), locations, excludedTitleWords });
         setS(saved);
         setSaveMsg({ kind: 'ok', text: 'ההגדרות נשמרו' });
       } catch (e) {
@@ -190,6 +197,19 @@ export function SettingsScreen() {
             rows={5}
             value={locationsText}
             onChange={(e) => { setLocationsText(e.target.value); setSaveMsg(null); }}
+          />
+        </label>
+      </section>
+
+      <section className="card stack">
+        <h2 className="card__title">תפקידים לא רלוונטיים</h2>
+        <label className="field">
+          <span className="field__label">מילה או ביטוי בכל שורה — משרה שהכותרת שלה מכילה אחד מהם תסונן</span>
+          <textarea
+            className="input ltr"
+            rows={4}
+            value={excludedText}
+            onChange={(e) => { setExcludedText(e.target.value); setSaveMsg(null); }}
           />
         </label>
       </section>

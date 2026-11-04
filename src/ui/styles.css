@@ -187,3 +187,26 @@ textarea.input { resize: vertical; }
 .company__name { font-weight: 600; }
 .badge { font-size: 11px; padding: 1px 7px; border-radius: 999px; background: var(--notice-bg); color: var(--text); }
 .company-form { background: var(--bg); border: 1px dashed var(--border); border-radius: 6px; padding: 10px; }
+
+/* ---- job cards (M4) ---- */
+.job-list { display: flex; flex-direction: column; gap: 10px; }
+.job__head { align-items: flex-start; }
+.job__title { font-weight: 600; font-size: 15px; text-decoration: none; overflow-wrap: anywhere; }
+.job__title:hover { text-decoration: underline; }
+.job__meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 13px; }
+.job__label { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+.job__tips, .job__reasons ul { margin: 0; padding-inline-start: 20px; font-size: 13px; }
+.job__tips li, .job__reasons li { margin-bottom: 4px; overflow-wrap: anywhere; }
+.job__reasons summary { cursor: pointer; font-size: 13px; color: var(--accent); }
+.job__reasons[open] summary { margin-bottom: 4px; }
+
+.score {
+  flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 700; font-size: 16px;
+}
+.score--high { background: var(--ok-bg); color: var(--ok-text); }
+.score--mid { background: var(--info-bg); color: var(--info-text); }
+.score--low { background: var(--notice-bg); color: var(--text); }
+
+.list-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.list-head h2 { font-size: 15px; margin: 0; }

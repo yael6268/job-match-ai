@@ -4,6 +4,7 @@ import { db } from '@/db/schema';
 import { createRun, executeRun, type RunDeps } from '@/pipeline/run';
 import { getAdapter } from '@/sources';
 import type { Company } from '@/shared/types';
+import { NO_MATCHING } from '../run-deps';
 
 const companies: Company[] = [
   { name: 'Riskified', source: 'greenhouse', boardId: 'riskified', enabled: true },
@@ -15,7 +16,7 @@ const companies: Company[] = [
   { name: 'Broken Co', source: 'greenhouse', boardId: 'no-such-board-xyz123', enabled: true },
 ];
 
-const deps: RunDeps = { companies: async () => companies, adapter: getAdapter, now: () => new Date() };
+const deps: RunDeps = { companies: async () => companies, adapter: getAdapter, now: () => new Date(), ...NO_MATCHING };
 
 describe('live fetch', () => {
   it('fetches hundreds of jobs, isolates the broken company, and creates no duplicates on re-run', async () => {

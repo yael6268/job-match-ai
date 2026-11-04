@@ -100,6 +100,9 @@ export interface Settings {
   dailyCallLimit: number; // default 200 — user should check current free-tier quota
   maxAiCandidatesPerRun: number; // default 40
   locations: string[]; // default ["Israel", "Tel Aviv", "Remote", "Hybrid", ...]
+  maxRequiredYears: number; // prefilter: skip jobs that ask for more, default 5
+  excludedTitleWords: string[]; // prefilter: skip titles with these words/phrases
+  aiDelaySeconds: number; // minimum delay between Gemini calls, default 4
 }
 
 export interface RunError {
@@ -115,6 +118,8 @@ export interface RunState {
   startedAt: string;
   phase: 'fetch' | 'prefilter' | 'overlap' | 'ai' | 'done' | 'error';
   companiesDone: string[]; // for resume
+  /** Job ids that passed this run's prefilter; input of the overlap phase (optional for older rows). */
+  prefilterPassedIds?: string[];
   aiQueue: string[]; // job ids waiting for AI
   aiDone: string[];
   callsToday: number;
@@ -130,6 +135,9 @@ export interface RunProgress {
   jobsSeen: number;
   jobsNew: number;
   jobsClosed: number;
+  jobsPassedPrefilter?: number;
+  /** Size of aiQueue after the overlap phase (carried-over + this run's candidates). */
+  aiQueued?: number;
 }
 
 export const DOMAINS = [

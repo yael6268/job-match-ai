@@ -3,6 +3,7 @@ import { dispatch, isMessage, type Handlers } from '@/shared/messages';
 import { startOrResumeRun, waitForRun } from '@/pipeline/controller';
 import { db } from '@/db/schema';
 import type { RunDeps } from '@/pipeline/run';
+import { NO_MATCHING } from './run-deps';
 
 const handlers: Handlers = {
   startRun: async () => { throw new Error('boom'); },
@@ -35,6 +36,7 @@ describe('startOrResumeRun', () => {
       companies: async () => [{ name: 'A', source: 'greenhouse', boardId: 'a', enabled: true }],
       adapter: () => ({ name: 'greenhouse', applyUrlPatterns: [], fetchJobs: async () => { await gate; return []; } }),
       now: () => new Date(),
+      ...NO_MATCHING,
     };
     const first = await startOrResumeRun(deps);
     const second = await startOrResumeRun(deps);

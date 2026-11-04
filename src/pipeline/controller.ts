@@ -1,5 +1,8 @@
 // Single-flight run controller used by the background service worker.
+import { createGeminiMatcher } from '@/ai/gemini';
+import { listCvs } from '@/db/repo';
 import { getCompanies } from '@/shared/companies';
+import { getSettings } from '@/shared/storage';
 import type { RunState } from '@/shared/types';
 import { getAdapter } from '@/sources';
 import { createRun, executeRun, getActiveRun, getLatestRun, pruneRuns, type RunDeps } from './run';
@@ -8,6 +11,15 @@ export const realDeps: RunDeps = {
   companies: getCompanies,
   adapter: getAdapter,
   now: () => new Date(),
+  settings: getSettings,
+  cvs: listCvs,
+  createMatcher: (s, beforeCall) =>
+    createGeminiMatcher({
+      apiKey: s.geminiApiKey,
+      model: s.geminiModel,
+      minDelayMs: s.aiDelaySeconds * 1000,
+      beforeCall,
+    }),
 };
 
 let inFlight: Promise<RunState> | null = null;

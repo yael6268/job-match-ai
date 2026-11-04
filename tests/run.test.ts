@@ -5,6 +5,7 @@ import { companyKey } from '@/shared/companies';
 import type { Company, RunState, SourceJob, SourceName } from '@/shared/types';
 import type { SourceAdapter } from '@/sources/types';
 import { sleep } from '@/shared/utils';
+import { NO_MATCHING } from './run-deps';
 
 function co(name: string, source: SourceName = 'greenhouse', enabled = true): Company {
   return { name, source, boardId: name.toLowerCase(), enabled };
@@ -43,6 +44,7 @@ function fakeDeps(opts: {
     companies: async () => opts.companies,
     adapter: () => adapter,
     now: () => new Date('2026-11-04T08:00:00Z'),
+    ...NO_MATCHING,
   };
   return { deps, stats };
 }
@@ -121,9 +123,9 @@ describe('executeRun — fetch phase', () => {
     const snapshots: RunState[] = [];
     const { deps } = fakeDeps({ companies, jobs: { A: [1], B: [2], C: [3] } });
     await executeRun(await createRun(), deps, (s) => snapshots.push(s));
-    // one write per company + final
-    expect(snapshots.length).toBe(4);
-    expect(snapshots.map((s) => s.companiesDone.length)).toEqual([1, 2, 3, 3]);
+    // one write per company, then the phase change and the final write
+    expect(snapshots.map((s) => s.companiesDone.length)).toEqual([1, 2, 3, 3, 3]);
+    expect(snapshots.at(-1)!.phase).toBe('done');
 
     // Simulate a killed worker: a run that already did A.
     const half = await createRun();
@@ -148,6 +150,7 @@ describe('executeRun — fetch phase', () => {
       companies: async () => { throw new Error('storage broke'); },
       adapter: () => { throw new Error('unused'); },
       now: () => new Date(),
+      ...NO_MATCHING,
     };
     const run = await executeRun(await createRun(), deps);
     expect(run.phase).toBe('error');

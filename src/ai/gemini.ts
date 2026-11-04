@@ -1,6 +1,11 @@
-// Gemini REST client. M1: model listing + key test. The match call, retries, rate limit and
-// daily cap are added in M4 (SPEC.md section 8.1).
+// Gemini REST client (SPEC.md section 8.1): model listing, key test, and the match call with
+// structured output, zod validation + one retry, a minimum delay between calls, backoff on 429/503,
+// and a per-call hook the run uses for the daily cap.
 // The API key is only ever sent in the x-goog-api-key header — never in URLs, never logged.
+import type { CV, Job } from '@/shared/types';
+import { sleep as realSleep } from '@/shared/utils';
+import { buildMatchPrompt, MATCH_SYSTEM_INSTRUCTION } from './prompts';
+import { extractJson, matchResponseSchema, parseMatchOutput, type MatchOutput } from './schemas';
 
 export const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const TIMEOUT_MS = 20_000;
@@ -49,10 +54,23 @@ export function describeGeminiError(status: number, body: string): string {
   return `שגיאה ${status}${detail}`;
 }
 
-async function geminiFetch(path: string, apiKey: string, init: RequestInit = {}): Promise<unknown> {
+/** A non-2xx Gemini response. `message` is the Hebrew explanation from describeGeminiError. */
+export class GeminiHttpError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+    this.name = 'GeminiHttpError';
+  }
+}
+
+async function geminiFetch(
+  path: string,
+  apiKey: string,
+  init: RequestInit = {},
+  timeoutMs = TIMEOUT_MS,
+): Promise<unknown> {
   if (!apiKey.trim()) throw new Error('לא הוזן מפתח API');
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   let res: Response;
   try {
     res = await fetch(`${GEMINI_BASE}${path}`, {
@@ -67,7 +85,7 @@ async function geminiFetch(path: string, apiKey: string, init: RequestInit = {})
     clearTimeout(timer);
   }
   const text = await res.text();
-  if (!res.ok) throw new Error(describeGeminiError(res.status, text));
+  if (!res.ok) throw new GeminiHttpError(describeGeminiError(res.status, text), res.status);
   try {
     return JSON.parse(text) as unknown;
   } catch {
@@ -96,4 +114,116 @@ export async function testKey(apiKey: string, model: string): Promise<string> {
     }),
   });
   return `המפתח תקין והמודל ${model} עונה`;
+}
+
+// ---------- match call ----------
+
+/** Generation can take a while for long prompts; listing/testing keeps the short timeout. */
+const GENERATE_TIMEOUT_MS = 60_000;
+/** Waits after HTTP 429/503 before trying again (SPEC.md 8.1). */
+export const BACKOFF_MS = [5_000, 15_000, 45_000];
+
+/** Thrown by the run's beforeCall hook when today's call limit is used up. */
+export class CallBudgetExhausted extends Error {
+  constructor() {
+    super('הגעת למגבלת קריאות ה-AI היומית — המשרות שנותרו ינותחו בריצה הבאה');
+    this.name = 'CallBudgetExhausted';
+  }
+}
+
+/** 429/503 kept coming after every backoff: leave the job queued for a later run. */
+export class AiRetryLater extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AiRetryLater';
+  }
+}
+
+/** The model returned output that failed validation twice: skip this job ("ai_failed"). */
+export class AiInvalidOutput extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AiInvalidOutput';
+  }
+}
+
+export interface MatcherOptions {
+  apiKey: string;
+  model: string;
+  /** Minimum time between the start of two calls. */
+  minDelayMs: number;
+  /** Called before every HTTP attempt; counts the call and throws CallBudgetExhausted at the cap. */
+  beforeCall: () => Promise<void>;
+  sleep?: (ms: number) => Promise<void>;
+  now?: () => number;
+}
+
+export interface AiMatcher {
+  readonly model: string;
+  match(
+    job: Pick<Job, 'title' | 'company' | 'location' | 'descriptionText'>,
+    cvs: Pick<CV, 'id' | 'name' | 'domains' | 'redactedText'>[],
+  ): Promise<MatchOutput>;
+}
+
+export function createGeminiMatcher(opts: MatcherOptions): AiMatcher {
+  const sleep = opts.sleep ?? realSleep;
+  const now = opts.now ?? Date.now;
+  let lastCallAt: number | undefined;
+
+  const rateLimit = async () => {
+    if (lastCallAt !== undefined) {
+      const wait = opts.minDelayMs - (now() - lastCallAt);
+      if (wait > 0) await sleep(wait);
+    }
+    lastCallAt = now();
+  };
+
+  /** One logical request: rate limit, count, send; back off and resend on 429/503. */
+  const generate = async (body: string): Promise<unknown> => {
+    for (let attempt = 0; ; attempt++) {
+      await opts.beforeCall();
+      await rateLimit();
+      try {
+        return await geminiFetch(
+          `/models/${encodeURIComponent(opts.model)}:generateContent`,
+          opts.apiKey,
+          { method: 'POST', body },
+          GENERATE_TIMEOUT_MS,
+        );
+      } catch (e) {
+        const transient = e instanceof GeminiHttpError && (e.status === 429 || e.status === 503);
+        if (!transient) throw e;
+        if (attempt >= BACKOFF_MS.length) throw new AiRetryLater(e.message);
+        await sleep(BACKOFF_MS[attempt]!);
+      }
+    }
+  };
+
+  return {
+    model: opts.model,
+    async match(job, cvs) {
+      const ids = cvs.map((c) => c.id);
+      const body = JSON.stringify({
+        systemInstruction: { parts: [{ text: MATCH_SYSTEM_INSTRUCTION }] },
+        contents: [{ role: 'user', parts: [{ text: buildMatchPrompt(job, cvs) }] }],
+        generationConfig: {
+          temperature: 0.2,
+          responseMimeType: 'application/json',
+          responseSchema: matchResponseSchema(ids),
+        },
+      });
+      let lastProblem = '';
+      // Invalid output: retry once, then give up on this job.
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const response = await generate(body);
+        try {
+          return parseMatchOutput(extractJson(response), ids);
+        } catch (e) {
+          lastProblem = (e as Error).message;
+        }
+      }
+      throw new AiInvalidOutput(lastProblem);
+    },
+  };
 }
