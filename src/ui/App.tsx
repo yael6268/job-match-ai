@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { CvsScreen } from './screens/CvsScreen';
+import { JobsDbScreen } from './screens/JobsDbScreen';
+import { StatsScreen } from './screens/StatsScreen';
 import { TodayScreen } from './screens/TodayScreen';
 import { EmptyState } from './components/EmptyState';
 
@@ -19,9 +21,7 @@ const TABS: { id: TabId; icon: string; label: string }[] = [
 
 /** Screens not built yet show which milestone delivers them. */
 const COMING: Partial<Record<TabId, string>> = {
-  jobs: 'יגיע בשלב 5',
   contacts: 'יגיע בשלב 8',
-  stats: 'יגיע בשלב 5',
 };
 
 export function App() {
@@ -58,6 +58,8 @@ export function App() {
         {tab === 'settings' && <SettingsScreen />}
         {tab === 'profile' && <ProfileScreen />}
         {tab === 'cvs' && <CvsScreen />}
+        {tab === 'jobs' && <JobsDbScreen />}
+        {tab === 'stats' && <StatsScreen />}
         {COMING[tab] && <EmptyState icon="🚧" title="בבנייה" text={COMING[tab]} />}
       </main>
     </div>

@@ -4,6 +4,7 @@ import type { Settings } from '@/shared/types';
 import { listModels, testKey, type GeminiModel } from '@/ai/gemini';
 import { Status, type StatusMsg } from '../components/Status';
 import { CompaniesSection } from './CompaniesSection';
+import { BackupSection } from './BackupSection';
 
 type NumberKey =
   | 'minScoreToShow' | 'minScoreToNotify' | 'runHour' | 'dailyCallLimit' | 'maxAiCandidatesPerRun'
@@ -222,6 +223,7 @@ export function SettingsScreen() {
       </div>
     </form>
     <CompaniesSection />
+    <BackupSection />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { isActive } from '@/pipeline/run';
 import { ProgressBar } from '../components/ProgressBar';
 import { EmptyState } from '../components/EmptyState';
 import { JobCard } from '../components/JobCard';
+import { JobActions } from '../components/JobActions';
 
 const PHASE_LABEL: Record<RunState['phase'], string> = {
   fetch: 'אוספת משרות',
@@ -149,7 +150,10 @@ export function TodayScreen() {
           </div>
           <div className="job-list">
             {data.jobs.map(({ job, match }) => (
-              <JobCard key={job.id} job={job} match={match} cvName={cvName(match.bestCvId)} />
+              <JobCard key={job.id} job={job} match={match} cvName={cvName(match.bestCvId)}>
+                {/* Any action moves the job out of 'new', so it leaves this list on refresh. */}
+                <JobActions job={job} match={match} cvs={data.cvs} onChanged={() => void refreshJobs()} />
+              </JobCard>
             ))}
           </div>
         </section>

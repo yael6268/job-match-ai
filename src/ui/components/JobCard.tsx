@@ -1,17 +1,19 @@
+import type { ReactNode } from 'react';
 import type { Job, Match } from '@/shared/types';
 import { ScoreBadge } from './ScoreBadge';
 
 /**
- * One analyzed job (SPEC.md section 9.2): company, title, location, score, link, recommended CV,
- * reasons (collapsible) and job-specific tips. Status buttons arrive in M5.
+ * One job (SPEC.md section 9.2): company, title, location, score, link, recommended CV,
+ * reasons (collapsible) and job-specific tips. Without a match (not analyzed) only the basics show.
+ * `children` renders below, e.g. the status buttons.
  */
-export function JobCard(props: { job: Job; match: Match; cvName: string }) {
+export function JobCard(props: { job: Job; match?: Match; cvName?: string; children?: ReactNode }) {
   const { job, match } = props;
-  const years = match.requiredYears ?? job.requiredYears;
+  const years = match?.requiredYears ?? job.requiredYears;
   return (
     <article className="card job stack">
       <div className="row job__head">
-        <ScoreBadge score={match.score} />
+        {match ? <ScoreBadge score={match.score} /> : <div className="score score--none" title="לא נותחה">—</div>}
         <div className="grow">
           <a className="job__title" href={job.url} target="_blank" rel="noreferrer" dir="auto">
             {job.title}
@@ -23,13 +25,15 @@ export function JobCard(props: { job: Job; match: Match; cvName: string }) {
       </div>
 
       <div className="job__meta">
-        <span>
-          קורות חיים מומלצים: <strong>{props.cvName}</strong>
-        </span>
+        {match && props.cvName && (
+          <span>
+            קורות חיים מומלצים: <strong>{props.cvName}</strong>
+          </span>
+        )}
         {years !== undefined && years !== null && <span className="badge">ניסיון נדרש: {years}+ שנים</span>}
       </div>
 
-      {match.reasons.length > 0 && (
+      {match && match.reasons.length > 0 && (
         <details className="job__reasons">
           <summary>למה הציון {match.score}?</summary>
           <ul>
@@ -38,7 +42,7 @@ export function JobCard(props: { job: Job; match: Match; cvName: string }) {
         </details>
       )}
 
-      {match.tips.length > 0 && (
+      {match && match.tips.length > 0 && (
         <div>
           <div className="job__label">טיפים להתאמת קורות החיים למשרה</div>
           <ol className="job__tips">
@@ -46,6 +50,8 @@ export function JobCard(props: { job: Job; match: Match; cvName: string }) {
           </ol>
         </div>
       )}
+
+      {props.children}
     </article>
   );
 }

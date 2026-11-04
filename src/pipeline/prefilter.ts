@@ -91,6 +91,14 @@ export function isExcludedTitle(title: string, excluded: string[]): boolean {
     .some((w) => matchesKeyword(t, HEBREW.test(w) ? w : `${w} `));
 }
 
+/**
+ * Category of an application for the stats: the first of the sent CV's domains that the job title
+ * matches, else the CV's first domain, else "אחר".
+ */
+export function applicationDomain(title: string, cvDomains: string[]): string {
+  return titleDomains(title, cvDomains)[0] ?? cvDomains[0] ?? 'אחר';
+}
+
 export interface PrefilterContext {
   settings: Pick<Settings, 'locations' | 'maxRequiredYears' | 'excludedTitleWords'>;
   /** Union of the domains of all CVs. */

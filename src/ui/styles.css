@@ -210,3 +210,20 @@ textarea.input { resize: vertical; }
 
 .list-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .list-head h2 { font-size: 15px; margin: 0; }
+
+/* ---- job statuses (M5) ---- */
+.score--none { background: var(--bg); color: var(--muted); border: 1px dashed var(--border); }
+.job__state { font-size: 13px; color: var(--muted); }
+.job__state--applied { color: var(--ok-text); font-weight: 600; }
+.apply-form { background: var(--bg); border-radius: 6px; padding: 10px; }
+
+/* ---- stats (M5): one-series horizontal bars ---- */
+.stats-row--2 { grid-template-columns: repeat(2, 1fr); }
+.bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.bars__row { display: grid; grid-template-columns: minmax(70px, 34%) 1fr 32px; align-items: center; gap: 8px; padding: 2px 0; }
+.bars__row:hover .bars__fill { filter: brightness(1.12); }
+.bars__label { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bars__track { height: 10px; }
+/* Thin bar anchored at the start edge (right, in RTL); rounded only at the data end. */
+.bars__fill { display: block; height: 100%; min-width: 4px; background: var(--accent); border-start-end-radius: 4px; border-end-end-radius: 4px; }
+.bars__value { font-size: 13px; font-weight: 600; color: var(--text); text-align: start; font-variant-numeric: tabular-nums; }

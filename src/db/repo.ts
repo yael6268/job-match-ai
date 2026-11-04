@@ -109,6 +109,20 @@ export async function getJobsForToday(minScore: number): Promise<JobWithMatch[]>
   return out.sort((a, b) => b.match.score - a.match.score);
 }
 
+export interface JobRecord {
+  job: Job;
+  match?: Match;
+  application?: Application;
+}
+
+/** Every job with its match and application (if any), for the Jobs DB screen. */
+export async function listAllJobs(): Promise<JobRecord[]> {
+  const [jobs, matches, apps] = await Promise.all([db.jobs.toArray(), db.matches.toArray(), db.applications.toArray()]);
+  const m = new Map(matches.map((x) => [x.jobId, x]));
+  const a = new Map(apps.map((x) => [x.jobId, x]));
+  return jobs.map((job) => ({ job, match: m.get(job.id), application: a.get(job.id) }));
+}
+
 export async function getJob(jobId: string): Promise<Job | undefined> {
   return db.jobs.get(jobId);
 }
