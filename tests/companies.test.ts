@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  companyKey, deleteCompany, getCompanies, parseCompany, saveCompany, seedCompanies, upsertInList,
+  addSuggestedCompanies, companyKey, deleteCompany, getCompanies, missingSuggestions, parseCompany, saveCompany,
+  seedCompanies, suggestedCompanies, upsertInList,
 } from '@/shared/companies';
 import type { Company } from '@/shared/types';
 import { db } from '@/db/schema';
@@ -81,6 +82,22 @@ describe('storage', () => {
     expect((await db.jobs.toArray())[0]!.company).toBe('Acme');
     await saveCompany({ ...acme, name: 'Acme Inc' }, companyKey(acme));
     expect((await db.jobs.toArray())[0]!.company).toBe('Acme Inc');
+  });
+
+  it('suggested companies are valid, unique, real (not examples) and added only once', async () => {
+    const s = suggestedCompanies();
+    expect(s.length).toBeGreaterThan(5);
+    expect(new Set(s.map(companyKey)).size).toBe(s.length);
+    expect(s.every((c) => c.enabled && !c.example)).toBe(true);
+
+    await fake.storage.local.set({ companies: [acme, s[0]!] });
+    expect(missingSuggestions(await getCompanies())).toHaveLength(s.length - 1);
+    const first = await addSuggestedCompanies();
+    expect(first.added).toBe(s.length - 1);
+    expect(first.list).toHaveLength(s.length + 1);
+    const again = await addSuggestedCompanies();
+    expect(again.added).toBe(0);
+    expect(await getCompanies()).toHaveLength(s.length + 1);
   });
 
   it('drops corrupt stored entries instead of failing', async () => {

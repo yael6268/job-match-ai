@@ -2,6 +2,7 @@
 import { z } from 'zod';
 import { browser } from 'wxt/browser';
 import seed from '@/data/companies.json';
+import suggested from '@/data/suggested-companies.json';
 import { renameCompanyJobs } from '@/db/repo';
 import type { Company } from './types';
 import { NOT_IN_EXTENSION_MSG } from './storage';
@@ -99,6 +100,29 @@ export async function saveCompany(company: Company, replaceKey?: string): Promis
     await renameCompanyJobs(parsed.source, before.name, parsed.name);
   }
   return next;
+}
+
+/**
+ * Suggested real companies (public Greenhouse/Lever boards with tech jobs in Israel, checked
+ * 2026-11-04). Offered from the Companies screen; never added automatically.
+ */
+export function suggestedCompanies(): Company[] {
+  return (suggested as unknown[]).map(parseCompany);
+}
+
+/** Pure: the suggestions that are not in the list yet (by source + board). */
+export function missingSuggestions(list: Company[], suggestions: Company[] = suggestedCompanies()): Company[] {
+  const have = new Set(list.map(companyKey));
+  return suggestions.filter((c) => !have.has(companyKey(c)));
+}
+
+/** Adds every suggested company that is not in the list yet. Returns the new list and how many were added. */
+export async function addSuggestedCompanies(): Promise<{ list: Company[]; added: number }> {
+  const current = await getCompanies();
+  const toAdd = missingSuggestions(current);
+  const list = [...current, ...toAdd];
+  await saveCompanies(list);
+  return { list, added: toAdd.length };
 }
 
 export async function deleteCompany(key: string): Promise<Company[]> {

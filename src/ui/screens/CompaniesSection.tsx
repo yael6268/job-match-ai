@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { companyKey, deleteCompany, getCompanies, saveCompany } from '@/shared/companies';
+import {
+  addSuggestedCompanies, companyKey, deleteCompany, getCompanies, missingSuggestions, saveCompany,
+} from '@/shared/companies';
 import { send } from '@/shared/messages';
 import type { Company, SourceName } from '@/shared/types';
 import { SUPPORTED_SOURCES } from '@/sources';
@@ -59,6 +61,17 @@ export function CompaniesSection() {
   if (!list) return <p className="muted">טוען…</p>;
 
   const enabledCount = list.filter((c) => c.enabled).length;
+  const suggestions = missingSuggestions(list);
+
+  const onAddSuggested = async () => {
+    try {
+      const { list: next, added } = await addSuggestedCompanies();
+      setList(next);
+      setMsg({ kind: 'ok', text: `נוספו ${added} חברות. אפשר ללחוץ "בדיקה" ליד כל אחת או פשוט להריץ חיפוש.` });
+    } catch (e) {
+      setMsg({ kind: 'error', text: (e as Error).message });
+    }
+  };
 
   return (
     <section className="card stack">
@@ -71,6 +84,18 @@ export function CompaniesSection() {
       </p>
       {loadError && <div className="status status--error">{loadError}</div>}
       {list.length === 0 && !loadError && <p className="notice">אין חברות ברשימה. הוסיפי לפחות חברה אחת כדי להתחיל.</p>}
+
+      {suggestions.length > 0 && !loadError && (
+        <div className="notice stack">
+          <span>
+            {suggestions.length} חברות מומלצות עם משרות פיתוח בישראל עוד לא ברשימה:{' '}
+            {suggestions.map((c) => c.name).join(', ')}.
+          </span>
+          <button type="button" className="btn btn--small" onClick={() => void onAddSuggested()} style={{ alignSelf: 'flex-start' }}>
+            הוספת {suggestions.length} החברות המומלצות
+          </button>
+        </div>
+      )}
 
       <ul className="company-list">
         {list.map((c) => {

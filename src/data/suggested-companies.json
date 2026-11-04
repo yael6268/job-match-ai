@@ -1,0 +1,15 @@
+[
+  { "name": "Taboola", "source": "greenhouse", "boardId": "taboola", "enabled": true },
+  { "name": "Payoneer", "source": "greenhouse", "boardId": "payoneer", "enabled": true },
+  { "name": "AppsFlyer", "source": "greenhouse", "boardId": "appsflyer", "enabled": true },
+  { "name": "Wiz", "source": "greenhouse", "boardId": "wizinc", "enabled": true },
+  { "name": "Cato Networks", "source": "greenhouse", "boardId": "catonetworks", "enabled": true },
+  { "name": "JFrog", "source": "greenhouse", "boardId": "jfrog", "enabled": true },
+  { "name": "Forter", "source": "greenhouse", "boardId": "forter", "enabled": true },
+  { "name": "Via", "source": "greenhouse", "boardId": "via", "enabled": true },
+  { "name": "Yotpo", "source": "greenhouse", "boardId": "yotpo", "enabled": true },
+  { "name": "Orca Security", "source": "greenhouse", "boardId": "orcasecurity", "enabled": true },
+  { "name": "Transmit Security", "source": "greenhouse", "boardId": "transmitsecurity", "enabled": true },
+  { "name": "Datarails", "source": "greenhouse", "boardId": "datarails", "enabled": true },
+  { "name": "Nanit", "source": "greenhouse", "boardId": "nanit", "enabled": true }
+]
