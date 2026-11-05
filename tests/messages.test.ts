@@ -10,6 +10,7 @@ const handlers: Handlers = {
   getRunState: async () => null,
   testCompany: async ({ company }) => ({ count: company.name.length }),
   markViewed: async ({ jobIds }) => ({ badge: jobIds.length }),
+  resolveComeet: async () => ({ companyUid: '49.004', token: 'T' }),
 };
 
 describe('dispatch', () => {

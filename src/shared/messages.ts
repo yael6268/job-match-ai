@@ -11,6 +11,8 @@ export interface MessageMap {
   testCompany: { req: { company: Company }; res: { count: number } };
   /** The Today screen showed these jobs: mark viewed, update the badge. */
   markViewed: { req: { jobIds: string[] }; res: { badge: number } };
+  /** Comeet careers-page link -> company uid + public token. */
+  resolveComeet: { req: { url: string }; res: { companyUid: string; token: string } };
 }
 
 export type MessageType = keyof MessageMap;

@@ -5,7 +5,7 @@ import { greenhouse, greenhouseUrl, mapGreenhouse } from '@/sources/greenhouse';
 import { lever, leverUrl, mapLever } from '@/sources/lever';
 import { getAdapter } from '@/sources';
 import { joinUnique, SOURCE_RETRY_DELAY_MS, SOURCE_TIMEOUT_MS, toIso } from '@/sources/http';
-import type { Company } from '@/shared/types';
+import type { Company, SourceName } from '@/shared/types';
 
 const ghCo: Company = { name: 'Riskified', source: 'greenhouse', boardId: 'riskified', enabled: true };
 const lvCo: Company = { name: 'WalkMe', source: 'lever', boardId: 'walkme', enabled: true };
@@ -223,7 +223,7 @@ describe('adapters over the network (fetch mocked)', () => {
 describe('registry and helpers', () => {
   it('returns adapters and rejects unsupported sources', () => {
     expect(getAdapter('greenhouse').name).toBe('greenhouse');
-    expect(() => getAdapter('comeet')).toThrow('עדיין לא נתמך');
+    expect(() => getAdapter('workday' as unknown as SourceName)).toThrow('עדיין לא נתמך');
   });
 
   it('joinUnique drops empties and case-insensitive duplicates', () => {

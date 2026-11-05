@@ -17,7 +17,7 @@ const SOURCE_LABEL: Record<SourceName, string> = {
 const BOARD_HINT: Record<SourceName, string> = {
   greenhouse: 'מהכתובת boards.greenhouse.io/‹מזהה›',
   lever: 'מהכתובת jobs.lever.co/‹מזהה›',
-  comeet: 'מזהה החברה ב-Comeet',
+  comeet: 'מתמלא מהקישור, בצורה 49.004',
   smartrecruiters: 'מהכתובת jobs.smartrecruiters.com/‹מזהה› או careers.smartrecruiters.com/‹מזהה› (רגיש לאותיות גדולות)',
 };
 
@@ -162,6 +162,48 @@ export function CompaniesSection() {
   );
 }
 
+/** Paste a Comeet careers-page link: the background reads the page and fills uid + token. */
+function ComeetLinkField(props: { draft: Company; onChange: (c: Company) => void }) {
+  const [link, setLink] = useState('');
+  const [msg, setMsg] = useState<StatusMsg>(null);
+  const [busy, setBusy] = useState(false);
+
+  const onResolve = async () => {
+    setBusy(true);
+    setMsg({ kind: 'info', text: 'קוראת את עמוד הקריירה…' });
+    try {
+      const { companyUid, token } = await send('resolveComeet', { url: link });
+      // Name defaults to the slug in the link when the user has not typed one.
+      const slug = /comeet\.com\/jobs\/([^/?#]+)/i.exec(link)?.[1] ?? '';
+      props.onChange({ ...props.draft, boardId: companyUid, token, name: props.draft.name || slug });
+      setMsg({ kind: 'ok', text: `נמצא: מזהה ${companyUid} וטוקן. אפשר ללחוץ "בדיקה".` });
+    } catch (e) {
+      setMsg({ kind: 'error', text: (e as Error).message });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="field">
+      <span className="field__label">קישור לעמוד המשרות ב-Comeet</span>
+      <span className="row">
+        <input
+          className="input ltr grow"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="https://www.comeet.com/jobs/‹חברה›/‹מזהה›"
+          spellCheck={false}
+        />
+        <button type="button" className="btn btn--small" onClick={() => void onResolve()} disabled={busy || !link.trim()}>
+          שליפת פרטים
+        </button>
+      </span>
+      <Status msg={msg} />
+    </div>
+  );
+}
+
 function CompanyForm(props: {
   draft: Company;
   onChange: (c: Company) => void;
@@ -194,11 +236,19 @@ function CompanyForm(props: {
           </select>
         </label>
       </div>
+      {d.source === 'comeet' && <ComeetLinkField draft={d} onChange={props.onChange} />}
       <label className="field">
         <span className="field__label">מזהה הלוח</span>
         <input className="input ltr" value={d.boardId} onChange={(e) => set('boardId', e.target.value)} spellCheck={false} />
         <span className="field__hint">{BOARD_HINT[d.source]}</span>
       </label>
+      {d.source === 'comeet' && (
+        <label className="field">
+          <span className="field__label">טוקן Comeet</span>
+          <input className="input ltr" value={d.token ?? ''} onChange={(e) => set('token', e.target.value)} spellCheck={false} />
+          <span className="field__hint">מתמלא אוטומטית מהקישור למעלה. זה מפתח ציבורי שמופיע בעמוד הקריירה של החברה.</span>
+        </label>
+      )}
       {d.source === 'smartrecruiters' && (
         <label className="field">
           <span className="field__label">מדינה</span>

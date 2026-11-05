@@ -1,0 +1,96 @@
+[
+  {
+    "name": "AI Engineer",
+    "department": "Research",
+    "location": {
+      "name": "Tel Aviv",
+      "country": "IL",
+      "city": "Ramat Gan",
+      "state": "Tel Aviv District",
+      "is_remote": true
+    },
+    "url_comeet_hosted_page": "https://www.comeet.com/jobs/upwind/49.004/ai-engineer/5C.375",
+    "url_recruit_hosted_page": "https://www.comeet.com/jobs/upwind/49.004/ai-engineer/5C.375",
+    "url_active_page": "https://www.upwind.io/careers/co/tel-aviv/5C.375/ai-engineer/all",
+    "employment_type": "Full-time",
+    "experience_level": "Intermediate",
+    "uid": "5C.375",
+    "custom_fields": {
+      "details": [
+        {
+          "name": "Description",
+          "value": "<p class=\"editor-paragraph\"><span style=\"white-space: pre-wrap;\">Upwind is a next-generation Cloud Security Platform that uses runtime context to identify and prioritize critical risks. Unlike traditional tools, Upwind uses runtime data to prioritize risk and inform posture, so teams can focus on what truly matters. Our eBPF-powered sensors and agentless cloud discovery deliver real-time threat protection, posture management, and API security. Together they protect cloud infrastructure end to end, from misconfigurations to malware. At Upwind, you'll have room to think creatively, explore new ideas, and make a real impact on our growth.</span></p><p class=\"editor-paragraph\"></ul>",
+          "order": 1
+        },
+        {
+          "name": "Requirements",
+          "value": "<ul class=\"editor-list-ul\"><li value=\"1\" class=\"editor-listitem\"><span style=\"white-space: pre-wrap;\">3+ years building AI/ML systems in production, including LLM-based agents built with modern AI and agent frameworks.</span></li><li value=\"2\" class=\"editor-listitem\"><span style=\"white-space: pre-wrap;\">Strong backend engineering skills and proficiency in Python.</span></li><li value=\"3\" class=\"editor-listitem\"><span style=\"white-space: pre-wrap;\">Experience training or fine-tuning ML models and LLMs.</span></li></ul>",
+          "order": 2
+        }
+      ],
+      "categories": []
+    },
+    "time_updated": "2026-11-04T17:52:35Z",
+    "company_name": "Upwind Security",
+    "workplace_type": "Hybrid"
+  },
+  {
+    "name": "Account Executive -  Brazil",
+    "department": "Sales",
+    "location": {
+      "name": "Brazil",
+      "country": "BR",
+      "city": "",
+      "state": "DF",
+      "is_remote": false
+    },
+    "url_comeet_hosted_page": "https://www.comeet.com/jobs/upwind/49.004/account-executive----brazil/57.37E",
+    "url_recruit_hosted_page": "https://www.comeet.com/jobs/upwind/49.004/account-executive----brazil/57.37E",
+    "url_active_page": "https://www.upwind.io/careers/co/brazil/57.37E/account-executive-brazil/all",
+    "employment_type": null,
+    "experience_level": null,
+    "uid": "57.37E",
+    "custom_fields": {
+      "details": [
+        {
+          "name": "Description",
+          "value": "<p class=\"editor-paragraph\"><span style=\"white-space: pre-wrap;\">Upwind is a next-generation Cloud Security Platform that leverages runtime context to identify and prioritize critical risks, providing precise insights and efficient cloud security management. Unlike traditional tools, Upwind uses runtime data proactively for risk prioritization and posture insights, ensuring teams focus on what truly matters. With industry-leading efficiency and eBPF-powered sensors, Upwind delivers comprehensive capabilities, including agentless cloud posture discovery, real-time threat protection, and integrated API security. From misconfigurations to malware defense, Upwind ensures end-to-end, cost-effecti</ul>",
+          "order": 1
+        },
+        {
+          "name": "Requirements",
+          "value": "<ul class=\"editor-list-ul\"><li value=\"1\" class=\"editor-listitem\"><span style=\"white-space: pre-wrap;\">&nbsp;Proven track record of driving and closing enterprise deals</span></li><li value=\"2\" class=\"editor-listitem\"><span style=\"white-space: pre-wrap;\">&nbsp;Ability to effectively sell to both C-level executives and technical stakeholders in Cloud / Security / DevOps</span></li><li value=\"3\" class=\"editor-listitem\"><span style=\"white-space: pre-wrap;\">&nbsp;Consistent achievement of quota and revenue targets with strong performance</span></li></ul>",
+          "order": 2
+        }
+      ],
+      "categories": []
+    },
+    "time_updated": "2026-11-04T04:42:02Z",
+    "company_name": "Upwind Security",
+    "workplace_type": "On-site"
+  },
+  {
+    "name": "AI Engineering Lead",
+    "department": "Engineering",
+    "location": {
+      "name": "Tel Aviv",
+      "country": "IL",
+      "city": "Ramat Gan",
+      "state": "Tel Aviv District",
+      "is_remote": true
+    },
+    "url_comeet_hosted_page": "https://www.comeet.com/jobs/upwind/49.004/ai-engineering-lead/4C.C69",
+    "url_recruit_hosted_page": "https://www.comeet.com/jobs/upwind/49.004/ai-engineering-lead/4C.C69",
+    "url_active_page": "https://www.upwind.io/careers/co/tel-aviv/4C.C69/ai-engineering-lead/all",
+    "employment_type": "Full-time",
+    "experience_level": null,
+    "uid": "4C.C69",
+    "custom_fields": {
+      "details": [],
+      "categories": []
+    },
+    "time_updated": "2026-11-04T15:57:51Z",
+    "company_name": "Upwind Security",
+    "workplace_type": "Hybrid"
+  }
+]

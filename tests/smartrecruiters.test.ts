@@ -124,10 +124,9 @@ describe('smartrecruiters adapter (fetch mocked)', () => {
 });
 
 describe('registry and company settings', () => {
-  it('smartrecruiters is supported; comeet is not yet', () => {
-    expect(SUPPORTED_SOURCES).toContain('smartrecruiters');
+  it('all four sources are supported', () => {
+    expect([...SUPPORTED_SOURCES].sort()).toEqual(['comeet', 'greenhouse', 'lever', 'smartrecruiters']);
     expect(getAdapter('smartrecruiters')).toBe(smartrecruiters);
-    expect(() => getAdapter('comeet')).toThrow('עדיין לא נתמך');
   });
 
   it('country is a 2-letter code, lowercased; empty means all countries', () => {

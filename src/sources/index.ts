@@ -1,13 +1,15 @@
 import type { SourceName } from '@/shared/types';
 import type { SourceAdapter } from './types';
 import { greenhouse } from './greenhouse';
+import { comeet } from './comeet';
 import { lever } from './lever';
 import { smartrecruiters } from './smartrecruiters';
 
-/** Registry: source name -> adapter. Comeet is not registered yet (its API is not verified). */
+/** Registry: source name -> adapter. */
 export const ADAPTERS: Partial<Record<SourceName, SourceAdapter>> = {
   greenhouse,
   lever,
+  comeet,
   smartrecruiters,
 };
 

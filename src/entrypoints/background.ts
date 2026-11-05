@@ -5,6 +5,7 @@ import { realDeps, startOrResumeRun } from '@/pipeline/controller';
 import { markJobsViewed, onAlarm, onBrowserStart, onSettingsChanged, resumeIfUnfinished, runHooks } from '@/pipeline/automation';
 import { getAdapter } from '@/sources';
 import { parseCompany } from '@/shared/companies';
+import { resolveComeetPage } from '@/sources/comeet';
 
 const handlers: Handlers = {
   startRun: async () => (await startOrResumeRun(realDeps, runHooks))!,
@@ -15,6 +16,7 @@ const handlers: Handlers = {
     return { count: jobs.length };
   },
   markViewed: async ({ jobIds }) => ({ badge: await markJobsViewed(jobIds) }),
+  resolveComeet: ({ url }) => resolveComeetPage(url),
 };
 
 export default defineBackground(() => {

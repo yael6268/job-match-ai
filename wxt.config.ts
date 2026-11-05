@@ -13,6 +13,7 @@ export default defineConfig({
       'https://api.lever.co/*',
       'https://api.eu.lever.co/*',
       'https://www.comeet.co/*',
+      'https://www.comeet.com/*',
       'https://api.smartrecruiters.com/*',
       'https://generativelanguage.googleapis.com/*',
     ],
