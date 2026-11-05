@@ -9,6 +9,7 @@ export interface Company {
   source: SourceName;
   boardId: string; // greenhouse board token / lever company slug / comeet company uid
   token?: string; // comeet public token, if needed
+  country?: string; // smartrecruiters: only postings in this ISO country (e.g. "il"); empty = all
   aliases?: string[]; // for matching contacts, e.g. ["Wix.com"]
   enabled: boolean;
   example?: boolean; // seeded sample entry from companies.json (shown with a badge)

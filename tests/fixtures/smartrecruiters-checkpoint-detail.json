@@ -1,0 +1,56 @@
+{
+  "id": "744000158968719",
+  "name": "Network Engineer",
+  "uuid": "ac201a59-a164-4757-863b-67d012c535e7",
+  "refNumber": "REF451U",
+  "company": {
+    "name": "Check Point Software Technologies",
+    "identifier": "CheckPointSoftwareTechnologies2"
+  },
+  "location": {
+    "city": "Tel Aviv-Yafo",
+    "region": "Tel Aviv District",
+    "country": "il",
+    "remote": false,
+    "hybrid": false,
+    "latitude": "32.0852999",
+    "longitude": "34.78176759999999",
+    "fullLocation": "Tel Aviv-Yafo, Tel Aviv District, Israel"
+  },
+  "releasedDate": "2026-11-01T11:05:21.788Z",
+  "postingUrl": "https://jobs.smartrecruiters.com/CheckPointSoftwareTechnologies2/744000158968719-network-engineer",
+  "applyUrl": "https://jobs.smartrecruiters.com/CheckPointSoftwareTechnologies2/744000158968719-network-engineer?oga=true",
+  "active": true,
+  "function": {
+    "id": "information_technology",
+    "label": "Information Technology"
+  },
+  "experienceLevel": {
+    "id": "associate",
+    "label": "Associate"
+  },
+  "typeOfEmployment": {
+    "id": "permanent",
+    "label": "Full-time"
+  },
+  "jobAd": {
+    "sections": {
+      "companyDescription": {
+        "title": "Company Description",
+        "text": "<p>At Check Point, what you do matters. Every day, we protect over 100,000 organizations worldwide from increasingly sophisticated cyber and AI-driven threats, securing their AI transformation.</p><p>Our prevention-first approach safeguards hybrid networks, cloud environments, digital workspaces, an</li></ul>"
+      },
+      "jobDescription": {
+        "title": "Job Description",
+        "text": "<ul><li><p>Responsible for technical operation and engineering of Check Point global networks including hands-on implementation, monitoring , and lifecycle management of network infrastructure.&#xa0;</p></li><li>Ensure uninterrupted network uptime for users and customers access across LAN, WAN and Wireless Networks within corporate infrastructure.</li><li>Maintain high availability and continuous uptime for Data Center infrastructures and application services.</li><li>Documenting and managing the installation of a new network environment, maintaining, and upgrading existing systems, as necessary.&#xa0;</li><li>Manage the day-to-day operations,&#xa0;maintenance and monitoring&#xa0;of the company’s network.&#xa0;</li><li><p>Troubleshoot and resolve complex network incidents, performance issues, and connectivity problems.</p></li><li><p>Support complex R&amp;D lab environments and continuou</li></ul>"
+      },
+      "qualifications": {
+        "title": "Qualifications",
+        "text": "<ul><li>Network Engineer with 5 -7 years hands-on experience with large scale networks operation and architecture.&#xa0;</li><li>Proven experience with:<ul><li>Cisco Nexus/Arista data center equipment.</li><li>Cisco Catalyst line network equipment.</li><li><p>Cisco ISR, ASR routing platforms.</p></li><li><p>Routing protocols and technologies such as BGP and OSPF.</p></li><li>Load balancing technologies (Citrix NetScaler - an advantage).</li></ul></li><li>Wireless LAN technologies (Juniper Mist - an advantage).</li><li><p>Experience with Cisco ISE / Network Access Control (NAC) is an advantage.</p></li><li>Strong knowledge of complex network environments (CCNP certification level).&#xa0;</li><li>Experience working with Linux based servers and systems.&#xa0;</li><li><p>Knowledge of virtualization infrastructure VMware/Nutanix.</p></li></ul><ul><li><p>Experience&#xa0;leveraging AI-assisted </li></ul>"
+      },
+      "additionalInformation": {
+        "title": "Additional Information",
+        "text": ""
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ export const companySchema = z.object({
   source: z.enum(['greenhouse', 'lever', 'comeet', 'smartrecruiters']),
   boardId: z.string().trim().min(1, 'חסר מזהה לוח').regex(/^[^\s/?#]+$/, 'מזהה הלוח לא יכול להכיל רווחים או /'),
   token: z.string().trim().optional(),
+  country: z.string().trim().toLowerCase().regex(/^([a-z]{2})?$/, 'קוד מדינה הוא שתי אותיות, למשל il').optional(),
   aliases: z.array(z.string().trim().min(1)).optional(),
   enabled: z.boolean(),
   example: z.boolean().optional(),
@@ -33,6 +34,7 @@ export function parseCompany(input: unknown): Company {
   return {
     ...c,
     token: c.token || undefined,
+    country: c.country || undefined,
     aliases: aliases?.length ? aliases : undefined,
   };
 }

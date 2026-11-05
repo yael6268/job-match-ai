@@ -18,7 +18,7 @@ const BOARD_HINT: Record<SourceName, string> = {
   greenhouse: 'מהכתובת boards.greenhouse.io/‹מזהה›',
   lever: 'מהכתובת jobs.lever.co/‹מזהה›',
   comeet: 'מזהה החברה ב-Comeet',
-  smartrecruiters: 'מהכתובת jobs.smartrecruiters.com/‹מזהה›',
+  smartrecruiters: 'מהכתובת jobs.smartrecruiters.com/‹מזהה› או careers.smartrecruiters.com/‹מזהה› (רגיש לאותיות גדולות)',
 };
 
 const EMPTY: Company = { name: '', source: 'greenhouse', boardId: '', enabled: true };
@@ -125,7 +125,7 @@ export function CompaniesSection() {
                   <span className="company__name">{c.name}</span>
                   {c.example && <span className="badge">דוגמה</span>}
                 </label>
-                <span className="field__hint ltr">{SOURCE_LABEL[c.source]} · {c.boardId}</span>
+                <span className="field__hint ltr">{SOURCE_LABEL[c.source]} · {c.boardId}{c.country ? ` · ${c.country}` : ''}</span>
               </div>
               <div className="row wrap">
                 <button className="btn btn--small" onClick={() => void onTest(c)}>בדיקה</button>
@@ -181,7 +181,15 @@ function CompanyForm(props: {
         </label>
         <label className="field">
           <span className="field__label">מקור</span>
-          <select className="input ltr" value={d.source} onChange={(e) => set('source', e.target.value as SourceName)}>
+          <select
+            className="input ltr"
+            value={d.source}
+            onChange={(e) => {
+              const source = e.target.value as SourceName;
+              // SmartRecruiters boards are global: default to Israeli postings only.
+              props.onChange({ ...d, source, country: source === 'smartrecruiters' ? d.country ?? 'il' : undefined });
+            }}
+          >
             {SUPPORTED_SOURCES.map((s) => <option key={s} value={s}>{SOURCE_LABEL[s]}</option>)}
           </select>
         </label>
@@ -191,6 +199,20 @@ function CompanyForm(props: {
         <input className="input ltr" value={d.boardId} onChange={(e) => set('boardId', e.target.value)} spellCheck={false} />
         <span className="field__hint">{BOARD_HINT[d.source]}</span>
       </label>
+      {d.source === 'smartrecruiters' && (
+        <label className="field">
+          <span className="field__label">מדינה</span>
+          <input
+            className="input ltr"
+            value={d.country ?? ''}
+            onChange={(e) => set('country', e.target.value)}
+            placeholder="il"
+            maxLength={2}
+            spellCheck={false}
+          />
+          <span className="field__hint">קוד בן שתי אותיות (il = ישראל). ריק = כל המדינות — איטי יותר בחברות גדולות.</span>
+        </label>
+      )}
       <label className="field">
         <span className="field__label">שמות נוספים (לא חובה, מופרדים בפסיק)</span>
         <input

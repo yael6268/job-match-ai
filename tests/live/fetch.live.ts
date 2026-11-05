@@ -13,6 +13,7 @@ const companies: Company[] = [
   { name: 'Payoneer', source: 'greenhouse', boardId: 'payoneer', enabled: true },
   { name: 'AppsFlyer', source: 'greenhouse', boardId: 'appsflyer', enabled: true },
   { name: 'WalkMe', source: 'lever', boardId: 'walkme', enabled: true },
+  { name: 'Nexar', source: 'smartrecruiters', boardId: 'NexarInc', country: 'il', enabled: true },
   { name: 'Broken Co', source: 'greenhouse', boardId: 'no-such-board-xyz123', enabled: true },
 ];
 

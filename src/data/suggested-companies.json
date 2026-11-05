@@ -11,5 +11,9 @@
   { "name": "Orca Security", "source": "greenhouse", "boardId": "orcasecurity", "enabled": true },
   { "name": "Transmit Security", "source": "greenhouse", "boardId": "transmitsecurity", "enabled": true },
   { "name": "Datarails", "source": "greenhouse", "boardId": "datarails", "enabled": true },
-  { "name": "Nanit", "source": "greenhouse", "boardId": "nanit", "enabled": true }
+  { "name": "Nanit", "source": "greenhouse", "boardId": "nanit", "enabled": true },
+  { "name": "Check Point", "source": "smartrecruiters", "boardId": "CheckPointSoftwareTechnologies2", "country": "il", "enabled": true },
+  { "name": "ServiceNow", "source": "smartrecruiters", "boardId": "ServiceNow", "country": "il", "enabled": true },
+  { "name": "Nexar", "source": "smartrecruiters", "boardId": "NexarInc", "country": "il", "enabled": true },
+  { "name": "Kueez", "source": "smartrecruiters", "boardId": "Kueez", "country": "il", "enabled": true }
 ]
