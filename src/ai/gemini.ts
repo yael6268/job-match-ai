@@ -4,8 +4,11 @@
 // The API key is only ever sent in the x-goog-api-key header — never in URLs, never logged.
 import type { CV, Job } from '@/shared/types';
 import { sleep as realSleep } from '@/shared/utils';
-import { buildMatchPrompt, MATCH_SYSTEM_INSTRUCTION } from './prompts';
-import { extractJson, matchResponseSchema, parseMatchOutput, type MatchOutput } from './schemas';
+import { buildMatchPrompt, buildReferralPrompt, MATCH_SYSTEM_INSTRUCTION, REFERRAL_SYSTEM_INSTRUCTION, type ReferralInput } from './prompts';
+import {
+  extractJson, matchResponseSchema, parseMatchOutput, parseReferralOutput, referralResponseSchema,
+  type MatchOutput, type ReferralOutput,
+} from './schemas';
 
 export const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const TIMEOUT_MS = 20_000;
@@ -226,4 +229,34 @@ export function createGeminiMatcher(opts: MatcherOptions): AiMatcher {
       throw new AiInvalidOutput(lastProblem);
     },
   };
+}
+
+// ---------- referral email ----------
+
+/**
+ * One user-initiated call (a button on the job card): structured output, zod validation, one retry
+ * on invalid output. Not part of a run, so it does not count against the run's daily cap.
+ */
+export async function generateReferralEmail(opts: { apiKey: string; model: string; input: ReferralInput }): Promise<ReferralOutput> {
+  if (!opts.model) throw new Error('לא נבחר מודל Gemini (הגדרות ← Gemini)');
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: REFERRAL_SYSTEM_INSTRUCTION }] },
+    contents: [{ role: 'user', parts: [{ text: buildReferralPrompt(opts.input) }] }],
+    generationConfig: { temperature: 0.4, responseMimeType: 'application/json', responseSchema: referralResponseSchema },
+  });
+  let problem = '';
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const res = await geminiFetch(
+      `/models/${encodeURIComponent(opts.model)}:generateContent`,
+      opts.apiKey,
+      { method: 'POST', body },
+      GENERATE_TIMEOUT_MS,
+    );
+    try {
+      return parseReferralOutput(extractJson(res));
+    } catch (e) {
+      problem = (e as Error).message;
+    }
+  }
+  throw new Error(`Gemini לא החזיר טיוטה תקינה (${problem}) — נסי שוב`);
 }

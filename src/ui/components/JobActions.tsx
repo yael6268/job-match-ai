@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { addApplication, setStatus } from '@/db/repo';
 import { applicationDomain } from '@/pipeline/prefilter';
-import type { Application, CV, Job, JobStatus, Match } from '@/shared/types';
+import type { Application, Contact, CV, Job, JobStatus, Match } from '@/shared/types';
+import { ReferralBox } from './ReferralBox';
 
 const STATUS_DONE: Partial<Record<JobStatus, string>> = {
   saved: 'נשמרה להמשך',
@@ -17,9 +18,13 @@ export function JobActions(props: {
   match?: Match;
   application?: Application;
   cvs: CV[];
+  /** Contacts at this job's company (already matched by name/alias). */
+  contacts?: Contact[];
   onChanged: () => void;
 }) {
   const { job, match, cvs } = props;
+  const contacts = props.contacts ?? [];
+  const [referralId, setReferralId] = useState('');
   const [applying, setApplying] = useState(false);
   const [cvId, setCvId] = useState(match?.bestCvId ?? cvs[0]?.id ?? '');
   const [error, setError] = useState('');
@@ -46,7 +51,8 @@ export function JobActions(props: {
         cvId,
         appliedAt: new Date().toISOString(),
         domain: applicationDomain(job.title, cv?.domains ?? []),
-        viaReferral: false,
+        viaReferral: !!referralId,
+        contactId: referralId || undefined,
       });
       setApplying(false);
     });
@@ -57,6 +63,7 @@ export function JobActions(props: {
     return (
       <div className="job__state job__state--applied">
         ✓ הוגשה{app ? ` ב-${new Date(app.appliedAt).toLocaleDateString('he-IL')}` : ''}
+        {app?.viaReferral ? ' · דרך הפניה' : ''}
         {cvName ? ` · קורות חיים: ${cvName}` : ''}
       </div>
     );
@@ -77,6 +84,15 @@ export function JobActions(props: {
             ))}
           </select>
         </label>
+        {contacts.length > 0 && (
+          <label className="field">
+            <span className="field__label">הגשת דרך הפניה?</span>
+            <select className="input" value={referralId} onChange={(e) => setReferralId(e.target.value)} disabled={busy}>
+              <option value="">לא, הגשה ישירה</option>
+              {contacts.map((c) => <option key={c.id} value={c.id}>כן, דרך {c.name}</option>)}
+            </select>
+          </label>
+        )}
         <div className="row wrap">
           <button className="btn btn--primary btn--small" onClick={() => void confirmApplied()} disabled={busy}>
             אישור — הגשתי
@@ -109,6 +125,7 @@ export function JobActions(props: {
         )}
       </div>
       {error && <div className="status status--error">{error}</div>}
+      {contacts.length > 0 && <ReferralBox job={job} match={match} cvs={cvs} contacts={contacts} />}
     </div>
   );
 }

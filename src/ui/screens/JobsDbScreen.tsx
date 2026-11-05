@@ -5,6 +5,7 @@ import type { CV, JobStatus } from '@/shared/types';
 import { EmptyState } from '../components/EmptyState';
 import { JobActions } from '../components/JobActions';
 import { JobCard } from '../components/JobCard';
+import { useContactsAt } from '../useContactsAt';
 
 const PAGE = 30;
 
@@ -31,6 +32,7 @@ export function JobsDbScreen() {
   const [f, setF] = useState<JobFilter>(DEFAULT_FILTER);
   const [shown, setShown] = useState(PAGE);
   const [error, setError] = useState('');
+  const contactsAt = useContactsAt();
 
   const load = useCallback(async () => {
     try {
@@ -118,7 +120,7 @@ export function JobsDbScreen() {
         <div className="job-list">
           {filtered.slice(0, shown).map(({ job, match, application }) => (
             <JobCard key={job.id} job={job} match={match} cvName={match ? cvName(match.bestCvId) : undefined}>
-              <JobActions job={job} match={match} application={application} cvs={cvs} onChanged={() => void load()} />
+              <JobActions job={job} match={match} application={application} cvs={cvs} contacts={contactsAt(job.company)} onChanged={() => void load()} />
             </JobCard>
           ))}
           {shown < filtered.length && (

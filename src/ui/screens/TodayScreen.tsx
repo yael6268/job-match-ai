@@ -9,6 +9,7 @@ import { ProgressBar } from '../components/ProgressBar';
 import { EmptyState } from '../components/EmptyState';
 import { JobCard } from '../components/JobCard';
 import { JobActions } from '../components/JobActions';
+import { useContactsAt } from '../useContactsAt';
 
 const PHASE_LABEL: Record<RunState['phase'], string> = {
   fetch: 'אוספת משרות',
@@ -30,6 +31,7 @@ export function TodayScreen() {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState('');
   const [starting, setStarting] = useState(false);
+  const contactsAt = useContactsAt();
 
   const refreshRun = useCallback(async () => {
     try {
@@ -155,7 +157,7 @@ export function TodayScreen() {
             {data.jobs.map(({ job, match }) => (
               <JobCard key={job.id} job={job} match={match} cvName={cvName(match.bestCvId)}>
                 {/* Any action moves the job out of 'new', so it leaves this list on refresh. */}
-                <JobActions job={job} match={match} cvs={data.cvs} onChanged={() => void refreshJobs()} />
+                <JobActions job={job} match={match} cvs={data.cvs} contacts={contactsAt(job.company)} onChanged={() => void refreshJobs()} />
               </JobCard>
             ))}
           </div>

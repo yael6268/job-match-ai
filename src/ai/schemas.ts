@@ -56,3 +56,31 @@ export function extractJson(response: unknown): unknown {
     throw new Error('response is not valid JSON');
   }
 }
+
+// ---------- referral email ----------
+
+export const referralOutputSchema = z.object({
+  subject: z.string().trim().min(1).max(200),
+  body: z.string().trim().min(20).max(3000),
+});
+
+export type ReferralOutput = z.infer<typeof referralOutputSchema>;
+
+export function parseReferralOutput(raw: unknown): ReferralOutput {
+  const r = referralOutputSchema.safeParse(raw);
+  if (!r.success) {
+    const issue = r.error.issues[0];
+    throw new Error(`invalid referral output: ${issue?.path.join('.') || 'root'} ${issue?.message ?? ''}`.trim());
+  }
+  return r.data;
+}
+
+export const referralResponseSchema = {
+  type: 'OBJECT',
+  properties: {
+    subject: { type: 'STRING' },
+    body: { type: 'STRING', description: 'Hebrew email body, 80-120 words' },
+  },
+  required: ['subject', 'body'],
+  propertyOrdering: ['subject', 'body'],
+} as const;

@@ -4,6 +4,7 @@ import { ProfileScreen } from './screens/ProfileScreen';
 import { CvsScreen } from './screens/CvsScreen';
 import { JobsDbScreen } from './screens/JobsDbScreen';
 import { StatsScreen } from './screens/StatsScreen';
+import { ContactsScreen } from './screens/ContactsScreen';
 import { TodayScreen } from './screens/TodayScreen';
 import { EmptyState } from './components/EmptyState';
 
@@ -21,7 +22,6 @@ const TABS: { id: TabId; icon: string; label: string }[] = [
 
 /** Screens not built yet show which milestone delivers them. */
 const COMING: Partial<Record<TabId, string>> = {
-  contacts: 'יגיע בשלב 8',
 };
 
 export function App() {
@@ -60,6 +60,7 @@ export function App() {
         {tab === 'cvs' && <CvsScreen />}
         {tab === 'jobs' && <JobsDbScreen />}
         {tab === 'stats' && <StatsScreen />}
+        {tab === 'contacts' && <ContactsScreen />}
         {COMING[tab] && <EmptyState icon="🚧" title="בבנייה" text={COMING[tab]} />}
       </main>
     </div>

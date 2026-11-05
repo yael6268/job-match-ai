@@ -5,6 +5,7 @@ import type {
 } from '@/shared/types';
 import { base64ToBlob, blobToBase64, jobIdFromUrl, sha256, uuid, weekStart } from '@/shared/utils';
 import { redactCvText } from '@/cv/redact';
+import { cleanContact, contactKey } from '@/shared/contacts';
 
 // ---------- jobs ----------
 
@@ -201,6 +202,42 @@ export async function getCv(id: string): Promise<CV | undefined> {
 
 export async function deleteCv(id: string): Promise<void> {
   await db.cvs.delete(id);
+}
+
+// ---------- contacts ----------
+
+export async function listContacts(): Promise<Contact[]> {
+  const all = await db.contacts.toArray();
+  return all.sort((a, b) => a.company.localeCompare(b.company, 'he') || a.name.localeCompare(b.name, 'he'));
+}
+
+/** Creates (no id) or updates a contact. Validates; throws a Hebrew Error. */
+export async function saveContact(input: Omit<Contact, 'id'> & { id?: string }): Promise<Contact> {
+  const c = cleanContact(input, uuid());
+  await db.contacts.put(c);
+  return c;
+}
+
+export async function deleteContact(id: string): Promise<void> {
+  await db.contacts.delete(id);
+}
+
+/** Bulk import: a contact with the same name at the same company is updated, not duplicated. */
+export async function importContacts(list: Omit<Contact, 'id'>[]): Promise<{ added: number; updated: number }> {
+  return db.transaction('rw', db.contacts, async () => {
+    const existing = new Map((await db.contacts.toArray()).map((c) => [contactKey(c), c]));
+    let added = 0;
+    let updated = 0;
+    for (const raw of list) {
+      const prev = existing.get(contactKey(raw));
+      const c = cleanContact({ ...raw, id: prev?.id }, uuid());
+      await db.contacts.put(prev ? { ...prev, ...Object.fromEntries(Object.entries(c).filter(([, v]) => v !== undefined)) } : c);
+      existing.set(contactKey(c), c);
+      if (prev) updated++;
+      else added++;
+    }
+    return { added, updated };
+  });
 }
 
 // ---------- applications & stats ----------
