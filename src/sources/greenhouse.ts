@@ -21,6 +21,11 @@ export function greenhouseUrl(boardId: string): string {
   return `https://boards-api.greenhouse.io/v1/boards/${encodeURIComponent(boardId.trim())}/jobs?content=true`;
 }
 
+export function greenhouseApplyUrl(boardId: string, jobId: number | string): string {
+  const q = new URLSearchParams({ for: boardId.trim(), token: String(jobId) });
+  return `https://job-boards.greenhouse.io/embed/job_app?${q}`;
+}
+
 export function mapGreenhouse(raw: unknown, company: Company): SourceJob[] {
   const jobs = (raw as { jobs?: unknown } | null)?.jobs;
   if (!Array.isArray(jobs)) throw new Error('תשובה לא צפויה מ-Greenhouse (חסר jobs)');
@@ -32,6 +37,9 @@ export function mapGreenhouse(raw: unknown, company: Company): SourceJob[] {
       company: company.name,
       title: j.title.trim(),
       url: j.absolute_url,
+      // The job page is often on the company site with the form in an iframe; this opens the same
+      // form directly on Greenhouse (verified 2026-11-07), where the form filler can run.
+      applyUrl: greenhouseApplyUrl(company.boardId, j.id),
       // "Tel Aviv" + office "Tel Aviv-Yafo, Gush Dan, Israel" -> both, so country matching works.
       location: joinUnique([j.location?.name, ...(j.offices ?? []).map((o) => o.location)]),
       department: j.departments?.[0]?.name?.trim() || undefined,

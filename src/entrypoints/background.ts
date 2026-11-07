@@ -6,6 +6,8 @@ import { markJobsViewed, onAlarm, onBrowserStart, onSettingsChanged, resumeIfUnf
 import { getAdapter } from '@/sources';
 import { parseCompany } from '@/shared/companies';
 import { resolveComeetPage } from '@/sources/comeet';
+import { getFillData, markAppliedFromForm } from '@/formfill/data';
+import { refreshBadge } from '@/pipeline/automation';
 
 const handlers: Handlers = {
   startRun: async () => (await startOrResumeRun(realDeps, runHooks))!,
@@ -17,6 +19,11 @@ const handlers: Handlers = {
   },
   markViewed: async ({ jobIds }) => ({ badge: await markJobsViewed(jobIds) }),
   resolveComeet: ({ url }) => resolveComeetPage(url),
+  getFillData: ({ url }) => getFillData(url),
+  markAppliedFromForm: async ({ jobId, cvId }) => {
+    await markAppliedFromForm(jobId, cvId);
+    return { badge: await refreshBadge() };
+  },
 };
 
 export default defineBackground(() => {

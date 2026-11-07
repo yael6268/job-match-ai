@@ -1,6 +1,7 @@
 // Typed messages between UI <-> background <-> content (SPEC.md section 10).
 import { browser } from 'wxt/browser';
 import type { Company, RunState } from './types';
+import type { FillData } from '@/formfill/data';
 import { NOT_IN_EXTENSION_MSG } from './storage';
 
 type NoPayload = Record<never, never>;
@@ -13,6 +14,10 @@ export interface MessageMap {
   markViewed: { req: { jobIds: string[] }; res: { badge: number } };
   /** Comeet careers-page link -> company uid + public token. */
   resolveComeet: { req: { url: string }; res: { companyUid: string; token: string } };
+  /** Content script on an application form: profile, matching job and CV file. */
+  getFillData: { req: { url: string }; res: FillData };
+  /** The form banner's "סמני כהוגשה". */
+  markAppliedFromForm: { req: { jobId: string; cvId: string }; res: { badge: number } };
 }
 
 export type MessageType = keyof MessageMap;

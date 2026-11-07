@@ -16,6 +16,12 @@ export default defineConfig({
       'https://www.comeet.com/*',
       'https://api.smartrecruiters.com/*',
       'https://generativelanguage.googleapis.com/*',
+      // Application-form hosts for the form filler (SPEC.md section 11).
+      'https://boards.greenhouse.io/*',
+      'https://job-boards.greenhouse.io/*',
+      'https://jobs.lever.co/*',
+      'https://jobs.eu.lever.co/*',
+      'https://jobs.smartrecruiters.com/*',
     ],
     action: { default_title: 'Job Match AI' },
     // pdfjs-dist 6 uses Promise.try and Uint8Array.prototype.toHex.

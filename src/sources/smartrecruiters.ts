@@ -25,6 +25,8 @@ interface SrLocation {
 
 interface SrPosting {
   id?: string;
+  /** Publication uuid: the Easy-apply form lives at /oneclick-ui/company/<company>/publication/<uuid>. */
+  uuid?: string;
   name?: string;
   releasedDate?: string;
   location?: SrLocation;
@@ -78,7 +80,11 @@ export function mapSmartRecruiters(item: SrPosting, detail: SrDetail | undefined
     company: company.name,
     title: d.name.trim(),
     url: d.postingUrl || `https://jobs.smartrecruiters.com/${encodeURIComponent(company.boardId.trim())}/${d.id}`,
-    applyUrl: d.applyUrl || undefined,
+    // The Easy-apply form itself (verified 2026-11-07): ?oga=true links redirect there, and the form
+    // filler identifies the job by this uuid.
+    applyUrl: d.uuid
+      ? `https://jobs.smartrecruiters.com/oneclick-ui/company/${encodeURIComponent(company.boardId.trim())}/publication/${d.uuid}`
+      : d.applyUrl || undefined,
     location: joinUnique([loc.fullLocation ?? loc.city, loc.remote ? 'Remote' : undefined, loc.hybrid ? 'Hybrid' : undefined]),
     department: (d.department?.label ?? d.function?.label)?.trim() || undefined,
     descriptionText: description(d),

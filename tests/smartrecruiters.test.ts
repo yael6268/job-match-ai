@@ -42,7 +42,8 @@ describe('smartrecruiters mapping (real trimmed response)', () => {
       company: 'Check Point',
       title: 'Network Engineer',
       url: detailFixture.postingUrl,
-      applyUrl: detailFixture.applyUrl,
+      // The Easy-apply form, identified by the posting's publication uuid.
+      applyUrl: `https://jobs.smartrecruiters.com/oneclick-ui/company/CheckPointSoftwareTechnologies2/publication/${detailFixture.uuid}`,
       location: 'Tel Aviv-Yafo, Tel Aviv District, Israel',
       postedAt: '2026-11-01T11:05:21.788Z',
     });

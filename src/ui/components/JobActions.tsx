@@ -110,6 +110,13 @@ export function JobActions(props: {
     <div className="stack">
       {STATUS_DONE[job.status] && <div className="job__state">{STATUS_DONE[job.status]}</div>}
       <div className="row wrap">
+        <button
+          className="btn btn--small"
+          onClick={() => window.open(job.applyUrl || job.url, '_blank', 'noopener')}
+          title="פותח את טופס ההגשה; התוסף ממלא את הפרטים ומצרף קורות חיים, ואת שולחת בעצמך"
+        >
+          מלאי טופס
+        </button>
         <button className="btn btn--primary btn--small" onClick={() => setApplying(true)} disabled={busy}>
           הגשתי
         </button>

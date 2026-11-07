@@ -11,6 +11,8 @@ const handlers: Handlers = {
   testCompany: async ({ company }) => ({ count: company.name.length }),
   markViewed: async ({ jobIds }) => ({ badge: jobIds.length }),
   resolveComeet: async () => ({ companyUid: '49.004', token: 'T' }),
+  getFillData: async () => { throw new Error('unused'); },
+  markAppliedFromForm: async () => ({ badge: 0 }),
 };
 
 describe('dispatch', () => {
