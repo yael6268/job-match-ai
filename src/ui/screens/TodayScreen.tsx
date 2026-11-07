@@ -3,6 +3,7 @@ import { send } from '@/shared/messages';
 import type { CV, RunState, Settings } from '@/shared/types';
 import { getJobsForToday, listCvs, type JobWithMatch } from '@/db/repo';
 import { getSettings } from '@/shared/storage';
+import { getCompanies } from '@/shared/companies';
 import { localDateStr } from '@/shared/utils';
 import { isActive } from '@/pipeline/run';
 import { ProgressBar } from '../components/ProgressBar';
@@ -24,6 +25,8 @@ interface Data {
   jobs: JobWithMatch[];
   cvs: CV[];
   settings: Settings;
+  /** Enabled companies in the list (0 = nothing to search). */
+  activeCompanies: number;
 }
 
 export function TodayScreen() {
@@ -46,7 +49,8 @@ export function TodayScreen() {
     try {
       const settings = await getSettings();
       const [jobs, cvs] = await Promise.all([getJobsForToday(settings.minScoreToShow), listCvs()]);
-      setData({ jobs, cvs, settings });
+      const activeCompanies = (await getCompanies().catch(() => [])).filter((c) => c.enabled).length;
+      setData({ jobs, cvs, settings, activeCompanies });
       // Shown here = seen: clear them from the toolbar badge.
       const unseen = jobs.filter((j) => !j.job.viewed).map((j) => j.job.id);
       if (unseen.length) send('markViewed', { jobIds: unseen }).catch(() => { /* badge is best-effort */ });
@@ -98,6 +102,9 @@ export function TodayScreen() {
 
       {data && data.cvs.length === 0 && (
         <p className="notice">עוד לא הועלו קורות חיים — בלעדיהם אפשר לאסוף משרות אבל לא לדרג אותן (לשונית 📄 קורות חיים).</p>
+      )}
+      {data && data.activeCompanies === 0 && (
+        <p className="notice">אין חברות פעילות ברשימה — אין איפה לחפש. הוסיפי חברות ב-⚙️ הגדרות ← חברות (יש שם גם כפתור לחברות מומלצות).</p>
       )}
       {data && data.cvs.length > 0 && !data.settings.geminiApiKey && (
         <p className="notice">לא הוגדר מפתח Gemini — המשרות ייאספו ויסוננו, אבל לא ינותחו (⚙️ הגדרות ← Gemini).</p>

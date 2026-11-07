@@ -49,7 +49,8 @@ export type Handlers = { [K in MessageType]: (req: MessageMap[K]['req']) => Prom
 /** Background side: dispatch a message to its handler and wrap the outcome in a Result. */
 export async function dispatch(handlers: Handlers, msg: Message): Promise<Result<unknown>> {
   const handler = handlers[msg.type] as ((req: unknown) => Promise<unknown>) | undefined;
-  if (!handler) return { ok: false, error: `Unknown message: ${msg.type}` };
+  // Usually the side panel was updated but the background still runs the previous build.
+  if (!handler) return { ok: false, error: `רקע התוסף לא מעודכן (${msg.type}) — יש ללחוץ ⟳ על התוסף ב-chrome://extensions` };
   try {
     return { ok: true, data: await handler(msg) };
   } catch (e) {

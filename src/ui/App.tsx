@@ -36,6 +36,7 @@ export function App() {
 
   return (
     <div className="app">
+      <OfflineBanner />
       <nav className="tabs" role="tablist" aria-label="מסכים">
         {TABS.map((t) => (
           <button
@@ -63,6 +64,24 @@ export function App() {
         {tab === 'contacts' && <ContactsScreen />}
         {COMING[tab] && <EmptyState icon="🚧" title="בבנייה" text={COMING[tab]} />}
       </main>
+    </div>
+  );
+}
+
+/** Shown while the browser is offline: runs and AI calls need the network (SPEC.md section 9). */
+function OfflineBanner() {
+  const [online, setOnline] = useState(() => navigator.onLine);
+  useEffect(() => {
+    const on = () => setOnline(true);
+    const off = () => setOnline(false);
+    window.addEventListener('online', on);
+    window.addEventListener('offline', off);
+    return () => { window.removeEventListener('online', on); window.removeEventListener('offline', off); };
+  }, []);
+  if (online) return null;
+  return (
+    <div className="offline" role="status">
+      📡 אין חיבור לאינטרנט — אפשר לעיין במשרות השמורות, אבל חיפוש וניתוח AI יחכו לחיבור.
     </div>
   );
 }

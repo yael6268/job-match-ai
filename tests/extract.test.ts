@@ -44,7 +44,9 @@ describe('normalizeExtractedText', () => {
   });
 });
 
-describe('extractCvText', () => {
+// Real DOCX/PDF parsing: usually ~1s, but a cold start under a full parallel run has taken 6-7s,
+// past vitest's 5s default, so these get more room.
+describe('extractCvText', { timeout: 30_000 }, () => {
   it('extracts English and Hebrew text from a DOCX', async () => {
     const text = await extractCvText(
       fromDataUrl(docxDataUrl, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'),

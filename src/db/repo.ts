@@ -130,7 +130,7 @@ export async function getJob(jobId: string): Promise<Job | undefined> {
 
 export async function setStatus(jobId: string, status: JobStatus): Promise<void> {
   const n = await db.jobs.update(jobId, { status });
-  if (n === 0) throw new Error(`Job not found: ${jobId}`);
+  if (n === 0) throw new Error('המשרה לא נמצאה במאגר — אולי נמחקה. נסי לרענן את המסך.');
 }
 
 export async function markViewed(jobIds: string[]): Promise<void> {
@@ -188,7 +188,7 @@ export async function updateCvMeta(id: string, meta: { name: string; domains: st
   const name = meta.name.trim();
   if (!name) throw new Error('יש לתת שם לגרסת קורות החיים');
   const n = await db.cvs.update(id, { name, domains: [...new Set(meta.domains)] });
-  if (n === 0) throw new Error(`CV not found: ${id}`);
+  if (n === 0) throw new Error('גרסת קורות החיים לא נמצאה — אולי נמחקה. נסי לרענן את המסך.');
 }
 
 export async function listCvs(): Promise<CV[]> {

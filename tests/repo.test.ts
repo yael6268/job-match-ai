@@ -147,7 +147,7 @@ describe('getJobsForToday', () => {
 
 describe('setStatus / matches', () => {
   it('throws for an unknown job', async () => {
-    await expect(setStatus('missing', 'saved')).rejects.toThrow('Job not found');
+    await expect(setStatus('missing', 'saved')).rejects.toThrow('המשרה לא נמצאה');
   });
 
   it('saveMatch overwrites by jobId', async () => {
