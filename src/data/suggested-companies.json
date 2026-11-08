@@ -15,5 +15,13 @@
   { "name": "Check Point", "source": "smartrecruiters", "boardId": "CheckPointSoftwareTechnologies2", "country": "il", "enabled": true },
   { "name": "ServiceNow", "source": "smartrecruiters", "boardId": "ServiceNow", "country": "il", "enabled": true },
   { "name": "Nexar", "source": "smartrecruiters", "boardId": "NexarInc", "country": "il", "enabled": true },
-  { "name": "Kueez", "source": "smartrecruiters", "boardId": "Kueez", "country": "il", "enabled": true }
+  { "name": "Kueez", "source": "smartrecruiters", "boardId": "Kueez", "country": "il", "enabled": true },
+  { "name": "Wix", "source": "smartrecruiters", "boardId": "Wix2", "country": "il", "enabled": true },
+  { "name": "Connecteam", "source": "greenhouse", "boardId": "connecteam", "enabled": true },
+  { "name": "Island", "source": "greenhouse", "boardId": "island", "enabled": true },
+  { "name": "Gong", "source": "greenhouse", "boardId": "gongio", "enabled": true },
+  { "name": "SentinelOne", "source": "greenhouse", "boardId": "sentinellabs", "enabled": true },
+  { "name": "Apiiro", "source": "greenhouse", "boardId": "apiiro", "enabled": true },
+  { "name": "Salt Security", "source": "greenhouse", "boardId": "saltsecurity", "enabled": true },
+  { "name": "Lightrun", "source": "greenhouse", "boardId": "lightrun", "enabled": true }
 ]
